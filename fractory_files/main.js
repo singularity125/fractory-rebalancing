@@ -74,6 +74,8 @@ Fractory = Ice.$extend('Fractory', {
 		var self = this;
 		self.$super();
 
+                self.buy_maximum = false;
+
                 self.saved_fractal_pattern = null;
                 self.saved_clear_pattern = "-49=";
                 self.saved_filled_pattern = "+49=";
@@ -495,6 +497,13 @@ Fractory = Ice.$extend('Fractory', {
 	buy_upgrade: function(ug) {
 		var self = this;
 		if(!ug.can_buy(self)) return;
+                
+                if(self.buy_maximum)
+                {
+                    self.buy_max_upgrades(ug);
+                    return;
+                }
+
                 var cost = ug.arcana_cost();
                 self.arcana.inc(-1 * ug.arcana_cost());
                 self.arcana_spent.inc(cost);
@@ -502,10 +511,25 @@ Fractory = Ice.$extend('Fractory', {
 
 		flash($('.available_upgrade.' + ug.code), 'green');
                 
-                
-                
 		return true;
 	},
+        
+        //Terrible, switch to a calculation formula and remove the loop
+        buy_max_upgrades: function (ug) {
+            var self = this;
+
+            while(ug.can_buy(self)){
+                var cost = ug.arcana_cost();
+                self.arcana.inc(-1 * ug.arcana_cost());
+                self.arcana_spent.inc(cost);
+                ug.points.inc(1);
+            }
+
+            flash($('.available_upgrade.' + ug.code), 'green');
+
+            return true;
+        },
+        
 	unbuy_upgrade: function(ug) {
 		var self = this;
 		if(ug.points() <= 0) return;

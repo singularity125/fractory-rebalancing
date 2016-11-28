@@ -23,21 +23,38 @@ KeyBindings = Ice.$extend('KeyBindings', {
             'shift+space': self.toggle_pause,
             'shift+]': self.clear_fractal_links,
             'shift+[': self.fill_fractal_links,
-            /*
-            '1': self.Imbuing,
-            '2': self.Reflection,
-            '3': self.Waxing,
-            '4': self.Conductivity,
-            '5': self.Resonance,
-            '6': self.Shine,
-            */
         };
 
         _.each(binds, function(fn, key) {
             //console.log("Binding ", key, fn);
             Mousetrap.bind(key, _.bind(fn, self));
-        });  
-
+        });
+        
+        Mousetrap.bind('shift', function(){self.set_buy_maximum(true)},'keydown');
+        Mousetrap.bind('shift', function(){self.set_buy_maximum(false)},'keyup');
+        
+        var crystal_types = ["Glow","Arcana","Waxing","Conductivity","Radiance","Imbuing","Infusing","Brilliance","Mystery","Reflection","Vividity","Power","Shine","Lens","Resonance","Prism","Shimmer","Seal","Purity","Gleam"];
+        var digit = 1;
+        var bound_key;
+        _.each(crystal_types, function(type){
+            if(digit<10)
+                bound_key = digit.toString();
+            else if(digit==10)
+                bound_key = '0';
+            else if(digit>10 && digit<20)
+                bound_key = 'shift+'+digit.toString();
+            else if(digit==20)
+                bound_key = 'shift+0'
+            else 
+                bound_key = 'ctrl+'+digit.toString();
+            
+            Mousetrap.bind(bound_key, function() {self.quick_crystal(type);});
+            digit++;
+        });
+    },
+    
+    set_buy_maximum: function(value){
+        game.buy_maximum = value;
     },
     
     buy_blank: function() {
@@ -52,6 +69,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(node.part()) return;
 
         node.set_part(shop_slot.part());
+        
     },
 
     quick_buy: function() {
@@ -133,15 +151,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
         game.paused()?game.unpause():game.pause();
     },
     
-    /*
-    
-    Shine: function() {
+    quick_crystal: function(type){
         var node = game.hovered_node();
         if(!node) return;
         if(node.part()) return;
-        if(!_.contains(game.unlocked_stats_list(),"Shine")) return;
-        
-        var type = "Shine";
+        if(!_.contains(game.unlocked_stats_list(),type)) return;
 
         var shop_slot = _.find(game.shop_slots(), function(ss) {
             return ss.mode() === 'single';
@@ -149,11 +163,15 @@ KeyBindings = Ice.$extend('KeyBindings', {
         var tier = shop_slot.tier();
         var max_refinement = Math.pow(100, tier);
         var refinement_used, budget;
-        refinement_used = max_refinement; //_.random(0, max_refinement);
-        budget = max_refinement;
+        refinement_used = _.random(0, max_refinement);
         
         var part = Part();
         part.tier(tier);
+
+        budget = Math.floor(refinement_used * 0.5);
+
+        var flaw = Math.floor(refinement_used - budget);
+        part.add_stat('Flaw', flaw);
 
         part.add_stat(type, budget);
         part.refinement(refinement_used);
@@ -166,168 +184,6 @@ KeyBindings = Ice.$extend('KeyBindings', {
             game.mana(game.mana()-cost);
         }
     },
-    
-    Imbuing: function() {
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
-        if(!_.contains(game.unlocked_stats_list(),"Imbuing")) return;
-        
-        var type = "Imbuing";
-
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'single';
-        });
-        var tier = shop_slot.tier();
-        var max_refinement = Math.pow(100, tier);
-        var refinement_used, budget;
-        refinement_used = max_refinement; //_.random(0, max_refinement);
-        budget = max_refinement;
-        
-        var part = Part();
-        part.tier(tier);
-
-        part.add_stat(type, budget);
-        part.refinement(refinement_used);
-        part.highest_stats.recompute();
-        
-        var cost = Math.floor(part.mana_cost());
-        if(game.mana()>=cost)
-        {
-            node.set_part(part);
-            game.mana(game.mana()-cost);
-        }
-    },
-    
-    Reflection: function() {
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
-        if(!_.contains(game.unlocked_stats_list(),"Reflection")) return;
-        
-        var type = "Reflection";
-
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'single';
-        });
-        var tier = shop_slot.tier();
-        var max_refinement = Math.pow(100, tier);
-        var refinement_used, budget;
-        refinement_used = max_refinement; //_.random(0, max_refinement);
-        budget = max_refinement;
-        
-        var part = Part();
-        part.tier(tier);
-
-        part.add_stat(type, budget);
-        part.refinement(refinement_used);
-        
-        part.highest_stats.recompute();
-        var cost = Math.floor(part.mana_cost());
-        if(game.mana()>=cost)
-        {
-            node.set_part(part);
-            game.mana(game.mana()-cost);
-        }
-    },
-    
-    Waxing: function() {
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
-        if(!_.contains(game.unlocked_stats_list(),"Waxing")) return;
-        
-        var type = "Waxing";
-
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'single';
-        });
-        var tier = shop_slot.tier();
-        var max_refinement = Math.pow(100, tier);
-        var refinement_used, budget;
-        refinement_used = max_refinement; //_.random(0, max_refinement);
-        budget = max_refinement;
-        
-        var part = Part();
-        part.tier(tier);
-
-        part.add_stat(type, budget);
-        part.refinement(refinement_used);
-        
-        part.highest_stats.recompute();
-        var cost = Math.floor(part.mana_cost());
-        if(game.mana()>=cost)
-        {
-            node.set_part(part);
-            game.mana(game.mana()-cost);
-        }
-    },
-    
-    Conductivity: function() {
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
-        if(!_.contains(game.unlocked_stats_list(),"Conductivity")) return;
-        
-        var type = "Conductivity";
-
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'single';
-        });
-        var tier = shop_slot.tier();
-        var max_refinement = Math.pow(100, tier);
-        var refinement_used, budget;
-        refinement_used = max_refinement; //_.random(0, max_refinement);
-        budget = max_refinement;
-        
-        var part = Part();
-        part.tier(tier);
-
-        part.add_stat(type, budget);
-        part.refinement(refinement_used);
-        
-        part.highest_stats.recompute();
-        var cost = Math.floor(part.mana_cost());
-        if(game.mana()>=cost)
-        {
-            node.set_part(part);
-            game.mana(game.mana()-cost);
-        }
-    },
-    
-    Resonance: function() {
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
-        if(!_.contains(game.unlocked_stats_list(),"Resonance")) return;
-        
-        var type = "Resonance";
-
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'single';
-        });
-        var tier = shop_slot.tier();
-        var max_refinement = Math.pow(100, tier);
-        var refinement_used, budget;
-        refinement_used = max_refinement; //_.random(0, max_refinement);
-        budget = max_refinement;
-        
-        var part = Part();
-        part.tier(tier);
-
-        part.add_stat(type, budget);
-        part.refinement(refinement_used);
-        
-        part.highest_stats.recompute();
-        var cost = Math.floor(part.mana_cost());
-        if(game.mana()>=cost)
-        {
-            node.set_part(part);
-            game.mana(game.mana()-cost);
-        }
-    },
-    
-    */
    
     copy_fractal_links: function(){
 
