@@ -1083,7 +1083,13 @@ div#game_render {
 			">
 				<span data-bind="text: game.paused() ? 'Paused' : 'Pause'"></span>
 			</a>
-
+                        
+                        <a class="pane_button" data-bind="
+				click: function() { alert(game.controls_help_message()); }
+			">
+				<span data-bind="text: 'Controls'"></span>
+			</a>
+                        
 
 		</div>
 		<!-- ko template: { name: 'kot/panes/stats_pane.html', data: game, as: 'game' } --><!-- /ko -->
@@ -1916,7 +1922,7 @@ div#game_render {
                                         }
                                         ss.prev_stat();
                                     }
-                                }}">&gt;</button>
+                                }}">&#60; &#62;</button>
                         <!-- /ko -->
                     </div>
                     <!-- /ko -->
