@@ -8,6 +8,8 @@ CHANGELOG
 
 Beta 0.9.1 28.11.2016
 
+Added a button to show controls, most of this changelog is now there
+
 Added the ability to scroll through simple crystal types and crystal tiers using mousewheel (both forward and backwards) - hover over the ">" button and scroll for types, hover over the tier plate for tiers
 
 Fixed simple crystal types getting stuck
