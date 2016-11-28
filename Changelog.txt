@@ -1,13 +1,3 @@
-# hellrage.github.io
-A host for my fork of Fractory by reddit user /jamuspsi
-
-He is the author and owner of the game and may request to take this repository down at any time.
-
-
-CHANGELOG
-
-Beta 0.9.1 28.11.2016
-
 Added the ability to scroll through simple crystal types and crystal tiers using mousewheel (both forward and backwards) - hover over the ">" button and scroll for types, hover over the tier plate for tiers
 Fixed simple crystal types getting stuck
 Fixed self-modifying crystals (power, lens, etc.)
@@ -24,3 +14,11 @@ Added hotkeys:
 	shift+]: clear all links - deactivates all links in the current fractal (Credit to https://www.reddit.com/user/JadeE1024)
 	shift+[: activate all links - activates all links in the current fractal (Credit to https://www.reddit.com/user/JadeE1024)
 	shift+space: pause\unpause
+	
+	
+	
+	
+Own additions - remove
+	flawless crystals with max. stats
+	hotkeys to place specific types of crystals
+	buy max upgrades with one click
