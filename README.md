@@ -18,6 +18,10 @@ Changed the styles in fractory.html to keep shop slots from bouncing around at h
 
 Added the ability to quickly activate\deactivate links (hold shift\ctrl and move the mouse over them)
 
+Holding shift when buying Enchanting upgrades now buys as many as you can in one click
+
+Added hotkeys to place all gem types, 1-0 for the first 10, shift + 1-0 for the rest
+
 Added hotkeys:
 
 	q: quickbuy - buys a crystal from current simple shop slot and places it, if possible
