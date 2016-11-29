@@ -54,7 +54,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
     },
     
     set_buy_maximum: function(value){
-        game.buy_maximum = value;
+        game.buy_maximum(value);
     },
     
     buy_blank: function() {
@@ -225,7 +225,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         pattern = pattern + curRun + "=";
         console.log(pattern);
 
-        game.saved_fractal_pattern = pattern;
+        game.saved_fractal_pattern(pattern);
         //console.log("Saving");
         alert("Saved!");
     },
@@ -276,19 +276,19 @@ KeyBindings = Ice.$extend('KeyBindings', {
     paste_fractal_links: function()
     {
         var self = this;
-        self.paste_pattern(game.saved_fractal_pattern);
+        self.paste_pattern(game.saved_fractal_pattern());
     },
     
     clear_fractal_links: function()
     {
         var self = KeyBindings();
-        self.paste_pattern(game.saved_clear_pattern);
+        self.paste_pattern(game.saved_clear_pattern());
     },
     
     fill_fractal_links: function()
     {
         var self = KeyBindings();
-        self.paste_pattern(game.saved_filled_pattern);
+        self.paste_pattern(game.saved_filled_pattern());
     },
 
     

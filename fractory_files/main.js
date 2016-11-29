@@ -74,11 +74,11 @@ Fractory = Ice.$extend('Fractory', {
 		var self = this;
 		self.$super();
 
-                self.buy_maximum = false;
+                self.buy_maximum = ko.observable(false);
 
-                self.saved_fractal_pattern = null;
-                self.saved_clear_pattern = "-49=";
-                self.saved_filled_pattern = "+49=";
+                self.saved_fractal_pattern = ko.observable(null);
+                self.saved_clear_pattern = ko.observable("-49=");
+                self.saved_filled_pattern = ko.observable("+49=");
 
 		self.shell = ko.observable(null);
 		self.shell(Shell());
@@ -498,7 +498,7 @@ Fractory = Ice.$extend('Fractory', {
 		var self = this;
 		if(!ug.can_buy(self)) return;
                 
-                if(self.buy_maximum)
+                if(self.buy_maximum())
                 {
                     self.buy_max_upgrades(ug);
                     return;
