@@ -213,6 +213,7 @@ Fractory = Ice.$extend('Fractory', {
 			'shell', 'mana', 'inventory_slots', 'shop_slots', 'unlocked_stats_list',
 			'learned_research_list', 'boosts_list',
 			'level', 'experience', 'total_tp', 'arcana', 'arcana_spent',
+                        'saved_fractal_pattern',
 		]);
 	},
 	start_game: function() {
