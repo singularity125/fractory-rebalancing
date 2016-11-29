@@ -42,11 +42,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
             else if(digit==10)
                 bound_key = '0';
             else if(digit>10 && digit<20)
-                bound_key = 'shift+'+digit.toString();
+                bound_key = 'shift+'+(digit%10).toString();
             else if(digit==20)
                 bound_key = 'shift+0'
             else 
-                bound_key = 'ctrl+'+digit.toString();
+                bound_key = 'ctrl+'+(digit%10).toString();
             
             Mousetrap.bind(bound_key, function() {self.quick_crystal(type);});
             digit++;
