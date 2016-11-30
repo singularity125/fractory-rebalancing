@@ -43,8 +43,12 @@ scene_holder {
   margin-right: 10px;
 }
 .inventory_holder {
-  width: 62px;
+  width: 230px;
   float: left;
+}
+
+.part_sandbox{
+    width: 110%;
 }
 .inventory_holder .inventory_label {
   font-size: 18pt;
@@ -1836,7 +1840,7 @@ div#game_render {
                     the <span data-bind="text: Mechs[tal.boost_mech_code()].props().noun"></span> stat.</span>
                 <!-- /ko -->
                 <!-- ko if: tal.adds_inventory_slots() -->
-                <span class="line">Adds inventory slots.</span>
+                <span class="line">Adds 3 inventory slots.</span>
                 <!-- /ko -->
                 <!-- ko if: tal.shop_mode() -->
                     <span class="line">
@@ -7520,7 +7524,7 @@ div#game_render {
 
                 <!-- ko if: tal.boost_mech_code() && (tal.unlocks_stat() != tal.boost_mech_code() || tal.points() > 0) --><!-- /ko -->
                 <!-- ko if: tal.adds_inventory_slots() -->
-                <span class="line">Adds inventory slots.</span>
+                <span class="line">Adds 3 inventory slots.</span>
                 <!-- /ko -->
                 <!-- ko if: tal.shop_mode() --><!-- /ko -->
             </td>
