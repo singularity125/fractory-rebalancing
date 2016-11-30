@@ -77,6 +77,7 @@ Talent = Ice.$extend('Talent', {
                 game.unlocked_stats_list.push(self.unlocks_stat());
         }
         if(self.adds_inventory_slots()) {
+            while(game.inventory_slots().length < 3 + self.points()) {
                 game.inventory_slots.push(InventorySlot());
             }
         }

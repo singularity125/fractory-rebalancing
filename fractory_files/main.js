@@ -242,7 +242,7 @@ Fractory = Ice.$extend('Fractory', {
 		//self.shell().nodes.w2.set_part(Part());
 		self.shell().refresh_all_flow();
 
-		self.inventory_slots([InventorySlot(), InventorySlot(), InventorySlot(), InventorySlot(), InventorySlot(), InventorySlot()]);
+		self.inventory_slots([InventorySlot(), InventorySlot(), InventorySlot()]);
 		self.shop_slots([
 			ShopSlot('blank'),
 			ShopSlot('single'),
