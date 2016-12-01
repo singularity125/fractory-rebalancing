@@ -153,13 +153,15 @@ KeyBindings = Ice.$extend('KeyBindings', {
     delete: function() {
         if(!window.game) return;
         
-        var node = game.hovered_node();
-        if(!node) return;
-        if(!node.part()) return;
-        if(node.part().mana_cost() == Infinity) return;
+        var part = game.hovered_part();
+        if(!part) return;
+        if(part.mana_cost() == Infinity) return;
+        if(Ice.isa(part.container(), ShopSlot)) return;
         
-        var part = ko.observable(null);
-        node.part(part());
+        if(game.last_moved_part() == part)
+            game.last_moved_part(null);
+        part.container().part(null);
+        part = null;
                 
     },
     
@@ -170,9 +172,12 @@ KeyBindings = Ice.$extend('KeyBindings', {
     
     quick_crystal: function(type){
         if(!window.game) return;
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
+        var container = game.hovered_node() || game.hovered_inventory_slot();
+        if(!container) return;       
+        if(container.part()) return;
+        
+        
+        
         if(!_.contains(game.unlocked_stats_list(),type)) return;
 
         var shop_slot = _.find(game.shop_slots(), function(ss) {
@@ -198,7 +203,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         var cost = Math.floor(part.mana_cost());
         if(game.mana()>=cost)
         {
-            node.set_part(part);
+            container.set_part(part);
             game.mana(game.mana()-cost);
         }
     },

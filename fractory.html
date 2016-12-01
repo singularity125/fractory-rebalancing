@@ -1147,8 +1147,18 @@ div#game_render {
 
 		}
 	},
+        right_click: _.bind(part.double_tap, part),
 	double_tap: _.bind(part.double_tap, part),
 	tap: _.bind(part.tap, part),
+        event: {
+            mouseover: function(part, event) {
+                    game.hovered_part(part);
+            },
+            mouseout: function(part, event) {
+                    if(game.hovered_part() !== part) return;
+                    game.hovered_part(null);
+            },
+        },
 	qtip_template: {
 		name: 'kot/part_tooltip.html',
 		data: part,
@@ -1211,7 +1221,16 @@ div#game_render {
                     islot.set_part(ev.draggable.dragObject);
                 },
                 overlap: 'center'
-            }
+            },
+            event: {
+            mouseover: function(slot, event) {
+                    game.hovered_inventory_slot(slot);
+            },
+            mouseout: function(slot, event) {
+                    if(game.hovered_inventory_slot() !== slot) return;
+                    game.hovered_inventory_slot(null);
+            },
+        },
         ">
             <!-- ko if: islot.part() -->
                         <!-- ko with: {part: islot.part(), shell: islot.shell } -->

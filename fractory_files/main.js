@@ -202,6 +202,8 @@ Fractory = Ice.$extend('Fractory', {
 
 		self.last_moved_part = ko.observable(null);
 		self.hovered_node = ko.observable(null);
+                self.hovered_part = ko.observable(null);
+                self.hovered_inventory_slot = ko.observable(null);
 
 		self.keybindings = KeyBindings();
 

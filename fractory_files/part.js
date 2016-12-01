@@ -302,7 +302,13 @@ Part = Ice.$extend('Part', {
         // if(!empty) return;
 
         // empty.set_part(self);
+        if(!Ice.isa(self.container(), ShopSlot)) return;
+        var empty = _.find(game.inventory_slots(), function(is) {
+            return !is.part();
+        });
+        if(!empty) return;
 
+        empty.set_part(self);
     },
     tap: function(ev) {
         var self = this;
