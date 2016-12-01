@@ -80,11 +80,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
         if(!shop_slot) return;
 
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
+        var container = game.hovered_node() || game.hovered_inventory_slot();
+        if(!container) return;       
+        if(container.part()) return;
 
-        node.set_part(shop_slot.part());
+        container.set_part(shop_slot.part());
         
     },
 
@@ -95,11 +95,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
         if(!shop_slot) return;
 
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
+        var container = game.hovered_node() || game.hovered_inventory_slot();
+        if(!container) return;       
+        if(container.part()) return;
 
-        node.set_part(shop_slot.part());
+        container.set_part(shop_slot.part());
     },
     
     quick_relay: function() {
@@ -109,11 +109,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
         if(!shop_slot) return;
 
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
+        var container = game.hovered_node() || game.hovered_inventory_slot();
+        if(!container) return;       
+        if(container.part()) return;
 
-        node.set_part(shop_slot.part());
+        container.set_part(shop_slot.part());
     },
     
     quick_fractal: function() {
@@ -143,11 +143,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
         if(!shop_slot) return;
 
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
+        var container = game.hovered_node() || game.hovered_inventory_slot();
+        if(!container) return;       
+        if(container.part()) return;
 
-        node.set_part(shop_slot.part());
+        container.set_part(shop_slot.part());
     },
     
     delete: function() {
