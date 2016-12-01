@@ -18,6 +18,9 @@ scene_holder {
   width: 910px;
   height: 620px;
 }
+.qtip{
+    min-width: 400px;
+}
 .scene {
   border: 1px dotted white;
   position: relative;
@@ -48,7 +51,7 @@ scene_holder {
 }
 
 .part_sandbox{
-    width: 110%;
+    width: 1190px;
 }
 .inventory_holder .inventory_label {
   font-size: 18pt;
@@ -833,7 +836,7 @@ div#game_render {
 	<script type="text/javascript" src="./fractory_files/raphael.min.js"></script>
 	<script type="text/javascript" src="./fractory_files/interact.min.js"></script>
 
-	<script type="text/javascript" src="./fractory_files/jquery.qtip.js"></script>
+	<script type="text/javascript" src="./fractory_files/jquery.qtip.min.js"></script>
 
 	<script src="./fractory_files/ice.js"></script>
 	<script src="./fractory_files/ko_extenders.js"></script>
@@ -1167,8 +1170,14 @@ div#game_render {
 				'effect': false,
 			},
 			'position': {
-				'my': 'top left',
-				'at': 'top right',
+				'my': 'top right',
+				'at': 'top left',
+                                viewport: $(window),
+                                target: 'mouse',
+                                adjust: {
+                                    screen: true,
+                                    method: 'flip',
+                                },
 			}
 		}
 	}
