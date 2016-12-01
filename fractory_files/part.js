@@ -412,6 +412,9 @@ Part = Ice.$extend('Part', {
         if(capped_amt > 0) {
             self.improved(true);
         }
+        else
+            if(code === 'Flaw')
+                self.improved(true);
         return capped_amt;
 
     },
