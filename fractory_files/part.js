@@ -309,6 +309,7 @@ Part = Ice.$extend('Part', {
         if(!empty) return;
 
         empty.set_part(self);
+        game.hovered_part(null);
     },
     tap: function(ev) {
         var self = this;

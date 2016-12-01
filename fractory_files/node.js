@@ -169,6 +169,7 @@ Node = InventorySlot.$extend('Node', {
                 if(!empty) return;
 
                 empty.set_part(self.part());
+                game.hovered_part(null);
 
             }
         } else {
@@ -183,6 +184,7 @@ Node = InventorySlot.$extend('Node', {
                 if(!part) return;
                 if(!part.container()) return;
                 self.set_part(part);
+                game.hovered_part(part);
                 return;
             }
             var filled = _.find(game.inventory_slots(), function(is) {
