@@ -30,8 +30,12 @@ KeyBindings = Ice.$extend('KeyBindings', {
             Mousetrap.bind(key, _.bind(fn, self));
         });
         
-        Mousetrap.bind('shift', function(){self.set_buy_maximum(true)},'keydown');
-        Mousetrap.bind('shift', function(){self.set_buy_maximum(false)},'keyup');
+        var key_modifiers = ['shift'];
+        _.each(key_modifiers, function(key){
+            Mousetrap.bind(key, function(){self.set_key_modifier(key,true);},'keydown');
+            Mousetrap.bind(key, function(){self.set_key_modifier(key,false);},'keyup');
+        });
+        
         
         var crystal_types = ["Glow","Arcana","Waxing","Conductivity","Radiance","Imbuing","Infusing","Brilliance","Mystery","Reflection","Vividity","Power","Shine","Lens","Resonance","Prism","Shimmer","Seal","Purity","Gleam"];
         var digit = 1;
@@ -53,8 +57,20 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
     },
     
-    set_buy_maximum: function(value){
-        game.buy_maximum(value);
+    set_key_modifier: function(modifier, state)
+    {
+        switch (modifier) {
+            case 'shift':
+                game.shift_pressed(state);
+                break;
+            case 'ctrl':
+                break;
+            case 'alt':
+                break;
+            default:
+                
+                break;
+        }
     },
     
     buy_blank: function() {
@@ -148,10 +164,12 @@ KeyBindings = Ice.$extend('KeyBindings', {
     },
     
     toggle_pause: function() {
+        if(!window.game) return;
         game.paused()?game.unpause():game.pause();
     },
     
     quick_crystal: function(type){
+        if(!window.game) return;
         var node = game.hovered_node();
         if(!node) return;
         if(node.part()) return;
@@ -186,7 +204,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
     },
    
     copy_fractal_links: function(){
-
+        if(!window.game) return;
         var pattern = '=';
         var lastState;
         var curRun = 0;
@@ -231,7 +249,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
     },
  
     paste_pattern: function(pattern){
-
+        if(!window.game) return;
         var curRun = 0;
         var curRunLength = 0;
         var lastState;
@@ -275,18 +293,21 @@ KeyBindings = Ice.$extend('KeyBindings', {
     
     paste_fractal_links: function()
     {
+        if(!window.game) return;
         var self = this;
         self.paste_pattern(game.saved_fractal_pattern());
     },
     
     clear_fractal_links: function()
     {
+        if(!window.game) return;
         var self = KeyBindings();
         self.paste_pattern(game.saved_clear_pattern());
     },
     
     fill_fractal_links: function()
     {
+        if(!window.game) return;
         var self = KeyBindings();
         self.paste_pattern(game.saved_filled_pattern());
     },
