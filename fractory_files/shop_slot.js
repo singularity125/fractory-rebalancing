@@ -98,6 +98,9 @@ ShopSlot = InventorySlot.$extend('ShopSlot', {
 		} else if(self.mode() === 'hopper') {
 			part = HopperPart();
 			part.tier(tier);
+		} else if(self.mode() === 'blank_generator') {
+			part = BlankGeneratorPart();
+			part.tier(tier);
 		}
 		part.highest_stats.recompute();
 		return part;

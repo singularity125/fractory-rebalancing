@@ -261,6 +261,8 @@ Part = Ice.$extend('Part', {
             colors = ['#eee', '#fbb', '#eee', '#eee', '#fbb', '#eee'];
         } else if(Ice.isa(self, CorePart)) {
             colors = ['#f00', '#f99', '#ff0', '#0f9', '#09f', '#f0f'];
+        } else if(Ice.isa(self, BlankGeneratorPart)) {
+            colors = ['#fbb000', '#fbb000', '#fbb000', '#fbb000', '#fbb000', '#fbb000'];
         } else if(self.highest_stats().length === 0) {
             colors = [
             '#111','#111','#111','#111', '#111', '#111',
@@ -720,6 +722,54 @@ ConduitPart = Part.$extend('ConduitPart', {
     }
 });
 
+BlankGeneratorPart = Part.$extend('BlankGeneratorPart', {
+    __init__: function() {
+        var self = this;
+        self.$super();
+        self.max_refinement = ko.observable(0);
+
+        self.mana_cost = ko.computed(function() {
+            return Math.pow(10000, self.tier());
+        });
+
+        self.glyph_holder_css = ko.computed(function() {
+            return 'one_glyph';
+
+        });
+
+        self.glyph_classes = ko.computed(function() {
+            return ['icon-conduit']
+        });
+    },
+    can_move: function(node) {
+        return true;
+    },
+    is_block: function() {
+        return true;
+    },
+    // No ticking.
+    tick: function() {
+        return;
+    },
+    reverse_apply: function(game) {
+        var self = this;
+        
+        var blank = Part();
+        blank.tier(self.tier());
+        if(game.mana()<blank.mana_cost())
+            return;
+        
+        var node = self.node();
+
+        _.each(node.links, function(l) {
+            if(l.active_flow() === 'down') {
+                var link_node = l.link_node();
+                if(!link_node.part())
+                    link_node.set_part(blank);
+            }
+        });
+        }
+});
 
 CapacitorPart = Part.$extend('CapacitorPart', {
     __init__: function() {

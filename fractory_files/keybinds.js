@@ -19,6 +19,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
             'c': self.quick_conduit,
             'a': self.quick_capacitor,
             'h': self.quick_hopper,
+            'g': self.quick_blank_generator,
             'd': self.delete,
             '[': self.copy_fractal_links,
             ']': self.paste_fractal_links,
@@ -162,6 +163,10 @@ KeyBindings = Ice.$extend('KeyBindings', {
     
     quick_hopper: function() {
         KeyBindings().quick_utility_crystal('hopper');
+    },
+    
+    quick_blank_generator: function() {
+        KeyBindings().quick_utility_crystal('blank_generator');
     },
     
     delete: function() {

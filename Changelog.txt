@@ -1,5 +1,9 @@
 CHANGELOG
 
+Beta 0.9.2 01.12.2016
+
+Added the blank generator gem, keybinds to place it and talents for it!
+
 Beta 0.9.1 01.12.2016
 
 Made the maximum inventory size 3 columns by 7 rows, each point in 'bigger inventory' grants 3 slots, you start with 6

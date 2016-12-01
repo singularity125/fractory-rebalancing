@@ -132,6 +132,16 @@ new Talent({
 });
 
 new Talent({
+    code: 'better_blank_generator',
+    name: 'Better Blank Generator',
+    shop_mode: 'blank_generator',
+    min_level: 25,
+    max_points_fn: function(game) {
+        return Talents['better_blanks'].points();
+    }
+});
+
+new Talent({
     code: 'better_simple',
     name: 'Better Simple',
     shop_mode: 'single',
