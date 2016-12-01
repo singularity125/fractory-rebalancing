@@ -526,13 +526,13 @@ Fractory = Ice.$extend('Fractory', {
         buy_max_upgrades: function (ug) {
             var self = this;
 
-            while(ug.can_buy(self)){
-                var cost = ug.arcana_cost();
-                self.arcana.inc(-1 * ug.arcana_cost());
-                self.arcana_spent.inc(cost);
-                ug.points.inc(1);
-            }
+            var number = ug.max_buyable();
+            var total_arcana_cost = ug.buy_max_cost();
+            self.arcana.inc(-1*total_arcana_cost);
+            self.arcana_spent.inc(total_arcana_cost);
+            ug.points.inc(number);
 
+            //alert('Bought '+number+' upgrades for '+total_arcana_cost+' arcana');
             flash($('.available_upgrade.' + ug.code), 'green');
 
             return true;

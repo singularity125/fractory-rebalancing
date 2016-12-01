@@ -17,6 +17,16 @@ Upgrade = Ice.$extend('Upgrade', {
             if(!self.mech()) return null;
             return self.mech().upgrade_arcana_cost(self.points() + 1);
         });
+        
+        self.max_buyable = ko.computed(function() {
+            if(!self.mech()) return null;
+            return Math.floor((Math.log((game.arcana()*(1.5-1))/(100*Math.pow(1.5,self.points())) +1))/Math.log(1.5));
+        });
+        
+        self.buy_max_cost = ko.computed(function() {
+            if(!self.mech()) return null;
+            return Math.floor(100*((Math.pow(1.5,self.points()))*(Math.pow(1.5,self.max_buyable())-1))/(1.5-1));
+        });
 
     },
     __keys__: function() {
