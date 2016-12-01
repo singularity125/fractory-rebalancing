@@ -4,8 +4,9 @@ Beta 0.9.1 01.12.2016
 
 Made the maximum inventory size 3 columns by 7 rows, each point in 'bigger inventory' grants 3 slots, you start with 6
 Reworked the code in keybindings to accomodate shift\ctr\alt modifiers for later
-Delete and quick crystal hotkeys are now usable inside the inventory
+Hotkeys for buying crystals are now usable inside the inventory
 Crystals can now be bought from the shop into your inventory by right clicking
+Tooltips now shouldn't go offscreen and follow your mouse smoothly
 
 Beta 0.9.1 28.11.2016
 

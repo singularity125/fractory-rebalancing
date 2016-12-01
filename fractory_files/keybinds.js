@@ -14,9 +14,11 @@ KeyBindings = Ice.$extend('KeyBindings', {
             'e': self.buy_blank,
             'b': self.buy_blank,
             'q': self.quick_buy,
-            'r': self.quick_relay,
             'f': self.quick_fractal,
+            'r': self.quick_relay,
             'c': self.quick_conduit,
+            'a': self.quick_capacitor,
+            'h': self.quick_hopper,
             'd': self.delete,
             '[': self.copy_fractal_links,
             ']': self.paste_fractal_links,
@@ -102,20 +104,6 @@ KeyBindings = Ice.$extend('KeyBindings', {
         container.set_part(shop_slot.part());
     },
     
-    quick_relay: function() {
-        if(!window.game) return;
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'relay';
-        });
-        if(!shop_slot) return;
-
-        var container = game.hovered_node() || game.hovered_inventory_slot();
-        if(!container) return;       
-        if(container.part()) return;
-
-        container.set_part(shop_slot.part());
-    },
-    
     quick_fractal: function() {
         if(!window.game) return;
         var shop_slot = _.find(game.shop_slots(), function(ss) {
@@ -123,23 +111,33 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
         if(!shop_slot) return;
 
-        var node = game.hovered_node();
-        if(!node) return;
-        if(node.part()) return;
-
-        var requiredTier = node.shell.depth();
-        if(requiredTier <= shop_slot.max_tier())
-        {
-            shop_slot.tier(requiredTier);
-            shop_slot.restock();
-            node.set_part(shop_slot.part());
-        }
+        var container = game.hovered_node();
+        if(container)
+            if(!container.part()){
+                var requiredTier = container.shell.depth();
+                if(requiredTier <= shop_slot.tier())
+                    container.set_part(shop_slot.part());
+                else {
+                    if(requiredTier <= shop_slot.max_tier()) {
+                        shop_slot.tier(requiredTier);
+                        shop_slot.restock();
+                        container.set_part(shop_slot.part());
+                    }
+                }
+                return;
+            }
+        
+        container = game.hovered_inventory_slot();
+        if(!container) return;
+        if(container.part()) return;
+        
+        container.set_part(shop_slot.part());
     },
     
-    quick_conduit: function() {
+    quick_utility_crystal: function(type) {
         if(!window.game) return;
         var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'conduit';
+            return ss.mode() === type;
         });
         if(!shop_slot) return;
 
@@ -148,6 +146,22 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(container.part()) return;
 
         container.set_part(shop_slot.part());
+    },
+    
+    quick_relay: function() {
+        KeyBindings().quick_utility_crystal('relay');
+    },
+    
+    quick_conduit: function() {
+        KeyBindings().quick_utility_crystal('conduit');
+    },
+    
+    quick_capacitor: function() {
+        KeyBindings().quick_utility_crystal('capacitor');
+    },
+    
+    quick_hopper: function() {
+        KeyBindings().quick_utility_crystal('hopper');
     },
     
     delete: function() {
