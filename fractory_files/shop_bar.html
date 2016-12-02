@@ -42,11 +42,49 @@
                     <div>
                         <button data-bind="click: function() { ss.restock(); }">Reroll</button>
                         <!-- ko if: ss.mode() === 'single' -->
-                        <button data-bind="click: function() { ss.next_stat(); }">&gt;</button>
+                        <button data-bind="click: function() {ss.next_stat();}, right_click: function() {ss.prev_stat();}, event:{mousewheel: function(handler,event)
+                                {
+                                    if(event.originalEvent.wheelDelta<0)
+                                    {
+                                        ss.next_stat();
+                                    }
+                                    else
+                                    {
+                                    if(ss.mode() === 'fractal' && ss.tier()>1)
+                                        {
+                                            ss.tier.inc(-1);
+                                            ss.restock();
+                                            return;
+                                        }
+                                        ss.prev_stat();
+                                    }
+                                }}">&lt; &gt;</button>
                         <!-- /ko -->
                     </div>
                     <!-- /ko -->
-                    <div class="tier_selector" data-bind="visible: ss.max_tier() > 1">
+                    <div class="tier_selector" data-bind="visible: ss.max_tier() > 1,
+                         event:{mousewheel: function(handler,event)
+                                {
+                                    if(event.originalEvent.wheelDelta<0)
+                                    {
+                                    if(ss.tier()< ss.max_tier())
+                                        {
+                                            ss.tier.inc(1);
+                                            ss.restock();
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                    if(ss.tier()>1)
+                                        {
+                                            ss.tier.inc(-1);
+                                            ss.restock();
+                                            return;
+                                        }
+                                    }
+                                }}
+                         ">
                         <button class="tier_down" data-bind="
                             disable: ss.tier() <= 1,
                             click: function() {
