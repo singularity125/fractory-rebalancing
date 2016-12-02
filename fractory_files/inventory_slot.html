@@ -16,7 +16,16 @@
                     islot.set_part(ev.draggable.dragObject);
                 },
                 overlap: 'center'
-            }
+            },
+            event: {
+                mouseover: function(slot, event) {
+                        game.hovered_inventory_slot(slot);
+                },
+                mouseout: function(slot, event) {
+                        if(game.hovered_inventory_slot() !== slot) return;
+                        game.hovered_inventory_slot(null);
+                },
+            },
         ">
             <!-- ko if: islot.part() -->
                         <!-- ko with: {part: islot.part(), shell: islot.shell } -->

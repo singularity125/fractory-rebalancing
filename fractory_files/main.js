@@ -44,7 +44,7 @@ $(function() {
 	$('*').click(function (){
 		console.log("Got a click: ", this);
 	});*/
-	loadExternalKnockoutTemplates('', function() {
+	loadExternalKnockoutTemplates('./fractory_files/', function() {
 		var game = window.game = Fractory();
 		ko.applyBindings({game: window.game}, $('#game_render')[0]);
 

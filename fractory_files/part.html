@@ -36,34 +36,50 @@
 
 		}
 	},
-	double_tap: _.bind(part.double_tap, part),
-	tap: _.bind(part.tap, part),
-	qtip_template: {
-		name: 'kot/part_tooltip.html',
-		data: part,
-		as: 'part',
-		qtip: {
-			'show': {
-				'effect': false,
-			},
-			'title': 'title1',
-			'content': {
-				'title': part.name(),
-				'text': 'foo',
-			},
-			'style': {
-				'classes': 'qtip-dark'
-			},
-			'hide': {
-				'fixed': false,
-				'effect': false,
-			},
-			'position': {
-				'my': 'top left',
-				'at': 'top right',
-			}
-		}
-	}
+	right_click: _.bind(part.double_tap, part),
+        double_tap: _.bind(part.double_tap, part),
+        tap: _.bind(part.tap, part),
+        event: {
+            mouseover: function(part, event) {
+                    game.hovered_part(part);
+            },
+            mouseout: function(part, event) {
+                    if(game.hovered_part() !== part) return;
+                    game.hovered_part(null);
+            },
+        },
+        qtip_template: {
+                name: 'kot/part_tooltip.html',
+                data: part,
+                as: 'part',
+                qtip: {
+                        'show': {
+                                'effect': false,
+                        },
+                        'title': 'title1',
+                        'content': {
+                                'title': part.name(),
+                                'text': 'foo',
+                        },
+                        'style': {
+                                'classes': 'qtip-dark'
+                        },
+                        'hide': {
+                                'fixed': false,
+                                'effect': false,
+                        },
+                        'position': {
+                                'my': 'top right',
+                                'at': 'top left',
+                                viewport: $(window),
+                                target: 'mouse',
+                                adjust: {
+                                    screen: true,
+                                    method: 'flip',
+                                },
+                        }
+                }
+        }
 ">
 	<div class="part_raph" data-bind="
 		raphael: _.bind(part.raph, part)

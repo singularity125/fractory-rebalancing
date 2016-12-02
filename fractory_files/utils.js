@@ -83,7 +83,7 @@ function loadExternalKnockoutTemplates(src_prefix, callback) {
         var $elem = $(elem);
         var kot = $elem.attr('kot');
         var src = (src_prefix || '') + kot;
-        $elem.attr('id', kot);
+        $elem.attr('id', 'kot/'+kot);
         $elem.attr('type', 'text/html');
         $elem.attr('src', src);
         // console.log("Trying to load for ", $elem);
