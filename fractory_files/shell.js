@@ -31,11 +31,11 @@ Shell = Ice.$extend('Shell', {
 	update_from_jsonable: function(jsonable) {
 		var self = this;
 		self.$super(jsonable);
-		console.log("Loading shell ", self.name());
+		//console.log("Loading shell ", self.name());
 		_.each(jsonable.links, function(link) {
 			var node =  self.nodes[link.loc];
 			var link = node.links[link.dir];
-			console.log("Loading to on ", link.text());
+			//console.log("Loading to on ", link.text());
 			link.active(true);
 			if(link.pair_link()) link.pair_link().active(true);
 		});
@@ -149,11 +149,11 @@ Shell = Ice.$extend('Shell', {
 	},
     right_click: function(event) {
         var self = this;
-        console.log("right click on shell");
+        //console.log("right click on shell");
         game.zoom_out();
     },
 	double_tap: function() {
-		console.log("zooming out");
+		//console.log("zooming out");
 		game.zoom_out();
 	},
 	link_externals: function() {
@@ -173,9 +173,9 @@ Shell = Ice.$extend('Shell', {
 			if(!outside_node) act = false;
 			else if(!outside_node.links[d]) act = false;
 			else act = outside_node.links[d].active();
-			console.log('linking external on ', self.name() + '.' +  node.loc, ' towards ', link.text(), ' setting ', act);
+			//console.log('linking external on ', self.name() + '.' +  node.loc, ' towards ', link.text(), ' setting ', act);
 			if(opposite_link)
-				console.log('Opposite link is ', opposite_link.text(), opposite_link.active());
+				//console.log('Opposite link is ', opposite_link.text(), opposite_link.active());
 			link.set_active(act, true);
 
 		});

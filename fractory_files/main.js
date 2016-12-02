@@ -42,7 +42,7 @@ $(function() {
 
 	/*
 	$('*').click(function (){
-		console.log("Got a click: ", this);
+		//console.log("Got a click: ", this);
 	});*/
 	loadExternalKnockoutTemplates('./fractory_files/', function() {
 		var game = window.game = Fractory();

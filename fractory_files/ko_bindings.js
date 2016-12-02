@@ -32,7 +32,7 @@ ko.bindingHandlers.tap = {
 ko.bindingHandlers.right_click = {
     init: function(element, valueAccessor) {
         $(element).on('contextmenu', function(event) {
-            console.log("binding element trying");
+            //console.log("binding element trying");
             valueAccessor()(event);
             event.preventDefault(true);
         });

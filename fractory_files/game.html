@@ -54,16 +54,16 @@
 						},
 						dropzone: {
 							ondropenter: function(ev) {
-								console.log('ondropenter', ev);
+								//console.log('ondropenter', ev);
 								ev.draggable.dropped_on = node;
 							},
 							ondropleave: function(ev) {
-								console.log('ondropleave', ev);
+								//console.log('ondropleave', ev);
 								ev.draggable.dropped_on = null;
 							},
 
 							ondrop: function(ev) {
-								console.log('ondrop', ev);
+								//console.log('ondrop', ev);
 								if(game.animating_shell()) return;
 
 								node.set_part(ev.draggable.dragObject);

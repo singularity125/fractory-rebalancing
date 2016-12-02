@@ -8,7 +8,7 @@ Tooltip = Ice.$extend('Tooltip', {
         obj.$el.addClass('.tooltipped');
         //obj must have an $el which has a backwards reference to it.
         //this.$el = TEMPLATES.clone('tooltip', this);
-        console.log(obj.$el);
+        //console.log(obj.$el);
         $(obj.$el).tooltip({
             content: function(callback) {self.generate_content(this, callback);},
             items:obj.$el,
@@ -17,7 +17,7 @@ Tooltip = Ice.$extend('Tooltip', {
         });
     },
     generate_content: function(el, callback) {
-        console.log('generate_content, this=', this);
+        //console.log('generate_content, this=', this);
         if(!this.structure) {
             this.structure = $('<div>');
             this.structure.addClass('tooltip');

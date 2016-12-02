@@ -187,8 +187,8 @@ Glow = Mech.$extend('Glow', {
         mana = Math.floor(mana);
         // console.log("Glowing mana ", mana);
         if(Number.isNaN(mana)) {
-            console.error("It's nan!");
-            console.trace();
+            //console.error("It's nan!");
+            //console.trace();
             return;
         }
         game.mana(game.mana() + mana);

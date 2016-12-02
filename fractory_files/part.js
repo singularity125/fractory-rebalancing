@@ -316,7 +316,7 @@ Part = Ice.$extend('Part', {
     tap: function(ev) {
         var self = this;
         if(ev.mouseButton == 2) return;
-        console.log("Tapping part");
+        //console.log("Tapping part");
         if(Ice.isa(self.container(), ShopSlot)) return;
         game.focus_part(self);
     },
@@ -540,10 +540,10 @@ FractalPart = Part.$extend('FractalPart', {
     },
     update_from_jsonable(jsonable) {
         var self = this;
-        console.log("Begin ufj on fractalpart");
+        //console.log("Begin ufj on fractalpart");
         self.$super(jsonable);
         self.shell().in_part(self);
-        console.log("End ufj on fractalpart");
+        //console.log("End ufj on fractalpart");
     },
     can_move: function(node) {
         var self = this;
@@ -806,7 +806,7 @@ CapacitorPart = Part.$extend('CapacitorPart', {
     reverse_apply: function(game) {
         var self = this;
 
-        console.log("Ticking capacitor");
+        //console.log("Ticking capacitor");
         var ups = _.filter(self.upstream_parts(), function(up) {
             return !up.is_block() && !up.improved();
         });
@@ -961,19 +961,19 @@ RelayPart = Part.$extend('RelayPart', {
         var self = this;
         if(!self.node()) return;
 
-        console.log("Searching for relay target.");
+        //console.log("Searching for relay target.");
         var target = null;
         var links = _.filter(self.node().links, function(l) {
             return l.active_flow() === 'down';
         });
-        console.log("Found links from relay:", links);
+        //console.log("Found links from relay:", links);
         while(links.length === 1) {
             var link_node = links[0].link_node();
-            console.log("Link node is ", link_node);
+            //console.log("Link node is ", link_node);
             if(!link_node) return null;
 
             if(link_node && link_node.part() && !Ice.isa(link_node.part(), RelayPart)) {
-                console.log("Link node has a non-relay part", link_node.part());
+                //console.log("Link node has a non-relay part", link_node.part());
                 return link_node.part();
             }
 
@@ -981,7 +981,7 @@ RelayPart = Part.$extend('RelayPart', {
                 return l.active_flow() === 'down';
             });
         }
-        console.log("Found no part.");
+        //console.log("Found no part.");
         return null;
 
     }
@@ -1008,7 +1008,7 @@ StatValue = Ice.$extend('StatValue', {
             return Mechs[self.code()];
         })
         self.factor = ko.computed(function() {
-            // console.log("mech for code ", self.code(), " is ", self.mech());
+            // //console.log("mech for code ", self.code(), " is ", self.mech());
             return self.mech().factor(self.boosted_total());
         });
         self.color = ko.computed(function() {

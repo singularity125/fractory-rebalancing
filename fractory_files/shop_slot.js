@@ -114,7 +114,7 @@ ShopSlot = InventorySlot.$extend('ShopSlot', {
 		if(Ice.isa(new_location, TrashSlot)) {
 			cost *= 0.25;
 		}
-		console.log("Can release?  Part costs ", cost);
+		//console.log("Can release?  Part costs ", cost);
 		return game.mana() >= cost;
 
 	},

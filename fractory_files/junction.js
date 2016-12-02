@@ -1,6 +1,6 @@
 Junction = Ice.$extend('Junction', {
     __init__: function() {
-        console.group("Junction.__init__");
+        //console.group("Junction.__init__");
         var self = this;
         this.$super();
 
@@ -50,18 +50,18 @@ Junction = Ice.$extend('Junction', {
         // it's actually slotted into a link.
         this.anim = new JunctionAnim(this);
 
-        console.groupEnd();
+        //console.groupEnd();
     },
 
     onLinkChanged: function(self, eargs){
-        console.group('junction.onLinkChanged');
+        //console.group('junction.onLinkChanged');
         // I should already have direction at this point.
         var direction = this.direction();
         var opposite = Node.opposites[direction];
 
         // If I have a source node, I definitely have a destination node.
         if(this.source_node()) {
-            console.log("Have a source_node, going to clear and unbind from them.");
+            //console.log("Have a source_node, going to clear and unbind from them.");
             //this.source_node.unbind(this);
 
             //Unlink from the nodes' junctions.
@@ -83,7 +83,7 @@ Junction = Ice.$extend('Junction', {
 
             this.source_node(null);
             this.destination_node(null);
-            console.log("Done clearing parts.");
+            //console.log("Done clearing parts.");
         }
         if(this.link()) {
             this.destination_node(this.link().nodes[direction]);
@@ -100,10 +100,10 @@ Junction = Ice.$extend('Junction', {
 
             //Now that I'm linked, I should be able to tell the
             // source part to provide me.
-            console.log("Asking part ", this.source_part().pretty(), " to provide ", this.pretty());
+            //console.log("Asking part ", this.source_part().pretty(), " to provide ", this.pretty());
             this.source_part().provide_junction(this);
         }
-        console.groupEnd();
+        //console.groupEnd();
     },
     onNodeChange: function(self, eargs) {
         // I bound both nodes to this, which is fine.
@@ -133,13 +133,13 @@ Junction = Ice.$extend('Junction', {
         this.destination_part(destination_part);
     },
     onPartChanged: function(self, eargs) {
-        console.group("Junction.onPartChanged ", this.pretty());
-        console.log("self=", self, " eargs=", eargs);
+        //console.group("Junction.onPartChanged ", this.pretty());
+        //console.log("self=", self, " eargs=", eargs);
         // I don't understand why I did this.  If I lost my link, and thus my source
         // part, I should stop providing.
         //if(eargs.obs == this.source_part && !eargs.val && this.link()) {
         if(eargs.obs == this.source_part) {
-            console.log("Setting source part.  oldval=", eargs.oldval, ' link=', this.link());
+            //console.log("Setting source part.  oldval=", eargs.oldval, ' link=', this.link());
             if(eargs.oldval) {
                 eargs.oldval.stop_providing(this);
                 // If I'm slotted in a link but my source part is gone, remove me.
@@ -158,7 +158,7 @@ Junction = Ice.$extend('Junction', {
         if(eargs.val) {
             eargs.oldval.sub(this);
         }*/
-        console.groupEnd();
+        //console.groupEnd();
     },
 
 
@@ -167,12 +167,12 @@ Junction = Ice.$extend('Junction', {
         return false;
     },
     construct_controller: function(jc, $stats, $opts) {
-        console.group('Junction.construct_controller');
+        //console.group('Junction.construct_controller');
         jc.stats = [];
         //$stats.html('Apple<br/>bannana<br/>canteloupe');
         jc.$name.text(this.name());
         jc.$desc.text(this.description());
-        console.groupEnd();
+        //console.groupEnd();
     },
     render_controller: function(jc, $stats, $opts) {
 
@@ -210,7 +210,7 @@ Junction.rotate_from_dir = function(dir) {
 
 PumpJunction = Junction.$extend('PumpJunction', {
     __init__: function() {
-        console.group('PumpJunction.__init__');
+        //console.group('PumpJunction.__init__');
         this.$super();
 
         this.pump_per_tick = IceObservable(this, 1.5);
@@ -221,7 +221,7 @@ PumpJunction = Junction.$extend('PumpJunction', {
 
         this.imgsrc('/images/junctions/red_pump.png');
 
-        console.groupEnd();
+        //console.groupEnd();
 
 
     },
@@ -235,7 +235,7 @@ PumpJunction = Junction.$extend('PumpJunction', {
         this.evChanged();
     },
     construct_controller: function(ctrl, $stats, $opts) {
-        console.group('PumpJunction.construct_controller');
+        //console.group('PumpJunction.construct_controller');
         this.$super(ctrl, $stats, $opts);
 
         var self = this;
@@ -266,27 +266,27 @@ PumpJunction = Junction.$extend('PumpJunction', {
             ctrl.color_options[color] = $opt;
         });
 
-        console.groupEnd();
+        //console.groupEnd();
 
     },
     render_controller: function(ctrl, $stats, $opts) {
-        console.group('PumpJunction.render_controller');
+        //console.group('PumpJunction.render_controller');
         var self = this;
         this.$super(ctrl, $stats, $opts);
 
         ctrl.$pump_per_tick.text(this.pump_per_tick());
         _.each(ctrl.color_options, function($opt, color) {
-            console.log(color, !!self.pump_colors[color]())
+            //console.log(color, !!self.pump_colors[color]())
             $opt.toggleClass('active', !!self.pump_colors[color]());
         });
         _.each(ctrl.flow_options, function($opt, fd) {
             var active = ((fd == 'Push' ? 1 : -1) == self.flow_direction());
             $opt.toggleClass('active', active);
         })
-        console.groupEnd();
+        //console.groupEnd();
     },
     toggle_color: function(color) {
-        console.log("Toggling ", color);
+        //console.log("Toggling ", color);
 
         this.pump_colors[color](!this.pump_colors[color]());
     },

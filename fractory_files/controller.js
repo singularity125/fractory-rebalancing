@@ -59,7 +59,7 @@ Controller = Ice.$extend('Controller', {
         this.obj.construct_controller(this, this.$dialog);
     },
     render_controller: function() {
-        console.log(this.obj.pretty());
+        //console.log(this.obj.pretty());
         this.obj.render_controller(this, this.$dialog);
     },
     bind_to_obj: function() {

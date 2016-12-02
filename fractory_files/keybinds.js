@@ -265,7 +265,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
         curRun++;
         pattern = pattern + curRun + "=";
-        console.log(pattern);
+        //console.log(pattern);
 
         game.saved_fractal_pattern(pattern);
         //console.log("Saving");
@@ -312,7 +312,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         });
 
         game.shell().refresh_all_flow();
-        console.log("Pasting");
+        //console.log("Pasting");
     },
     
     paste_fractal_links: function()

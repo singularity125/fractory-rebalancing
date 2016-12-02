@@ -1,6 +1,6 @@
 JunctionAnim = Ice.$extend('JunctionAnim', {
     __init__: function(junction) {
-        console.group("JunctionAnim.__init__");
+        //console.group("JunctionAnim.__init__");
         var self = this;
         this.$super();
 
@@ -38,7 +38,7 @@ JunctionAnim = Ice.$extend('JunctionAnim', {
         this.junction(junction);
 
         this.render();
-        console.groupEnd();
+        //console.groupEnd();
     },
     onJunctionChange: function(self, eargs) {
         var self = this;
@@ -66,7 +66,7 @@ JunctionAnim = Ice.$extend('JunctionAnim', {
         return this.direction().indexOf('e') == -1;
     },
     render: function() {
-        console.group('JunctionAnim.render ', this.pretty());
+        //console.group('JunctionAnim.render ', this.pretty());
         this.$el.css(this.elsize.size());
         this.$both.css(this.elsize.size());
 
@@ -81,7 +81,7 @@ JunctionAnim = Ice.$extend('JunctionAnim', {
         if(!this.paused) {
             this.start_anim();
         }
-        console.groupEnd();
+        //console.groupEnd();
 
     },
     start_anim: function() {

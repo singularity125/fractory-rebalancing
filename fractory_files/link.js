@@ -160,7 +160,7 @@ Link = Ice.$extend('Link', {
 		if(!last_unburrow) {
 			l = self.pair_link();
 			if(!self.pair_link()) {
-				console.log("Couldn't reburrow because last unburrow was null and there's no pair");
+				//console.log("Couldn't reburrow because last unburrow was null and there's no pair");
 				return links; //?
 			}
 
@@ -192,7 +192,7 @@ Link = Ice.$extend('Link', {
 			l = l.unburrow_link();
 			if(l) last_unburrow = l;
 		}
-		console.log("Unburrowed to top: ", last_unburrow.text());
+		//console.log("Unburrowed to top: ", last_unburrow.text());
 		if(last_unburrow !== self) links.push(last_unburrow);
 
 		dbg("Phase 2", links);
@@ -203,7 +203,7 @@ Link = Ice.$extend('Link', {
 			l = l.burrow_link();
 			if(l) last_burrow = l;
 		}
-		console.log("reburrowed to remote bottom: ", last_burrow.text());
+		//console.log("reburrowed to remote bottom: ", last_burrow.text());
 
 		dbg("Phase 3");
 		// The last burrow will be an external facing the opposite direction,
@@ -218,25 +218,25 @@ Link = Ice.$extend('Link', {
 
 			}
 		}
-		console.log("Unburrowed from remote bottom ")
+		//console.log("Unburrowed from remote bottom ")
 		dbg("Phase 4", links);
 		// Now burrow all the way down in the inverse direction from last_unburrow
 		// which means burrowing from either the inverse or, if there is no inverse, itself.
 		var inverse = last_unburrow.pair_link() || last_unburrow;
-		console.log("From ", inverse.text());
+		//console.log("From ", inverse.text());
 		l = inverse.burrow_link();
 		last_burrow = l;
 
 		if(!last_unburrow.burrow_link()) {
 			links.push(inverse);
 		}
-		console.log("Last burrow is ", last_burrow);
+		//console.log("Last burrow is ", last_burrow);
 		while(l) {
 			if(l !== self && l) links.push(l);
 			l = l.burrow_link();
 			if(l) last_burrow = l;
 		}
-		console.log("Burrowed to local bottom: ", last_burrow ? last_burrow.text() : last_burrow);
+		//console.log("Burrowed to local bottom: ", last_burrow ? last_burrow.text() : last_burrow);
 
 		dbg("Phase 5", links);
 		// Lastly, burrow all the way back up until self.
@@ -247,7 +247,7 @@ Link = Ice.$extend('Link', {
 			l = l.unburrow_link();
 		}
 
-		console.log("Unburrowed back to self");
+		//console.log("Unburrowed back to self");
 		*/
 		return links;
 	},
@@ -283,7 +283,7 @@ Link = Ice.$extend('Link', {
 
 				var outside_node = outside_part.node();
 				// By turning that one ON, if that one also extends out, it should turn THAT on too.
-				console.log("Attempting escape on ", outside_node.loc, ' direction ', self.direction());
+				//console.log("Attempting escape on ", outside_node.loc, ' direction ', self.direction());
 				outside_node.links[self.direction()].set_active(act, true);
 			}
 		}
@@ -295,7 +295,7 @@ Link = Ice.$extend('Link', {
 				// the reverse edge link.
 				var sh = part.shell();
 				var d = l.direction();
-				console.log("Attempting burrow on ", d + sh.edge_suffix(), " direction ", d);
+				//console.log("Attempting burrow on ", d + sh.edge_suffix(), " direction ", d);
 				var node = sh.nodes[d + sh.edge_suffix()];
 				if(!node) return;
 				var ext_link = node.links[d];
@@ -321,21 +321,21 @@ Link = Ice.$extend('Link', {
 		var self = this;
 	},*/
 	set_junction: function(junction){
-		console.group('Link.set_junction ', this.pretty());
+		//console.group('Link.set_junction ', this.pretty());
 		if(junction === this.junction()) {
-			console.warn("No change, aborting.");
-			console.groupEnd();
+			//console.warn("No change, aborting.");
+			//console.groupEnd();
 			return;
 		}
 		if(junction && this.junction()) {
-			console.warn("Cannot put a junction in a link that already has one.");
+			//console.warn("Cannot put a junction in a link that already has one.");
 			return;
 		}
 
 		//Junctions don't really move.  They're just destroyed.  So there's
 		// basically just two operations here: set and clear.
 		if(!junction) {
-			console.log("Setting to null.");
+			//console.log("Setting to null.");
 			// I don't need the animation on me anymore.
 			this.junction().anim.$el.detach();
 			this.junction().anim.stop_anim();
@@ -351,8 +351,8 @@ Link = Ice.$extend('Link', {
 		} else {
 			//set.
 			var dfd = this.junction(junction, 'defer');
-			console.log("Trying to set junction's link to me, junction=", junction.pretty(), ", this=", this.pretty())
-			console.log("This.junction()=", this.junction().pretty());
+			//console.log("Trying to set junction's link to me, junction=", junction.pretty(), ", this=", this.pretty())
+			//console.log("This.junction()=", this.junction().pretty());
 			var dfd2 = this.junction().link(this, 'defer');
 
 			// Put the element on me.
@@ -364,13 +364,13 @@ Link = Ice.$extend('Link', {
 
 
 		}
-		console.groupEnd();
+		//console.groupEnd();
 	},
 	onJunctionChanged: function(self, eargs) {
 
 	},
 	onClick: function() {
-		console.log("Link clicked.");
+		//console.log("Link clicked.");
 	},
 
 	stripe_holder_css: function() {

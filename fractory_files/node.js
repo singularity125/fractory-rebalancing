@@ -142,18 +142,18 @@ Node = InventorySlot.$extend('Node', {
 	},
     tap: function(event) {
         var self = this;
-        console.log("event is ", event);
+        //console.log("event is ", event);
 
     },
     right_click: function(event) {
         var self = this;
-        console.log("right click on node");
+        //console.log("right click on node");
         event.stopPropagation();
         self.double_tap(event);
     },
     double_tap: function(event) {
         var self = this;
-        console.log("double tap on node");
+        //console.log("double tap on node");
         event.stopPropagation();
 
         if(self.part()) {
@@ -194,7 +194,7 @@ Node = InventorySlot.$extend('Node', {
 
             self.set_part(filled.part());
         }
-        console.log("Done doubletapping");
+        //console.log("Done doubletapping");
     },
 
 
@@ -371,7 +371,7 @@ ko.bindingHandlers.qtip_template = {
        //update logic
     },
     dispose: function(element) {
-    	console.log(counter, "Destroying qtip some more?");
+    	//console.log(counter, "Destroying qtip some more?");
         $(element).qtip("potato");
     	$(element).qtip('destroy');
     }
@@ -381,7 +381,7 @@ ko.bindingHandlers.qtip_template.COUNTER = 0;
 ko.bindingHandlers.progressbar = {
     init: function(element, valueAccessor, allBindingsAccessor, data, context) {
         //init logic
-        console.trace();
+        //console.trace();
         var $el = $(element);
         var options = valueAccessor();
         // $el.data('loc', options.part.node.peek().loc);
@@ -443,10 +443,10 @@ ko.bindingHandlers.progressbar = {
              });
         }
 
-        console.log("End update");
+        //console.log("End update");
     },
     dispose: function(element) {
-            console.log("Disposing old subs 3");
+            //console.log("Disposing old subs 3");
     	// $(element).progressbar('destroy');
                 var old_subs = $el.data('progressbar_subs') || false;
         if(old_subs) {

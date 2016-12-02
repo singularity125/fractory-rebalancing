@@ -27,7 +27,7 @@ InventorySlot = Ice.$extend('InventorySlot', {
 	set_part: function(part, force) {
 		var self = this;
 		var console = silence;
-		console.group("Moving part");
+		//console.group("Moving part");
 		var old_location = part.container();
 		var old_part = self.part();
 
@@ -43,9 +43,9 @@ InventorySlot = Ice.$extend('InventorySlot', {
 				});
 				if(!empty) return false;
 
-				console.log("moving current part to empty slot.");
+				//console.log("moving current part to empty slot.");
 				empty.set_part(old_part);
-				console.log("Done");
+				//console.log("Done");
 				old_part = self.part();
 			}
 
@@ -85,7 +85,7 @@ InventorySlot = Ice.$extend('InventorySlot', {
 
 				// console.log("Putting old_part ", old_part, "in old_location ", old_location);
 				// There should pretty much always be one.
-				console.log("For swap, putting old part ", old_part, " in old location", old_location);
+				//console.log("For swap, putting old part ", old_part, " in old location", old_location);
 				old_location.part(old_part);
 			}
 
@@ -103,14 +103,14 @@ InventorySlot = Ice.$extend('InventorySlot', {
 				old_part.shell().link_externals();
 			}
 			if(old_location) {
-				console.log("Notifying old_location", old_location, " of a part change.");
+				//console.log("Notifying old_location", old_location, " of a part change.");
 				old_location.on_part_change(old_location.part(), part, self);
 			}
 			self.on_part_change(self.part(), old_part, old_location);
 
 			game.last_moved_part(part);
 		} finally {
-			console.groupEnd();
+			//console.groupEnd();
 		}
 	},
 	on_part_change: function(part) {
