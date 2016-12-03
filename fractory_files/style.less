@@ -30,8 +30,8 @@ scene_holder {
 	width: 720px;
 	height: 640px;
 	float: left;
-	margin-left: 10px;
-	margin-right: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .inventory_holder {
@@ -45,7 +45,7 @@ scene_holder {
 	}
 }
 .shop_bar {
-	width: 138px;
+	width: 290px;
 	float: left;
 
 	.shop_label {
@@ -67,7 +67,7 @@ scene_holder {
 			float: left;
 			margin-right: 4px;
 			margin-bottom: 4px;
-			width: 63px;
+			width: 90px;
 			height: 145px;
 			padding: 1px;
 			.shop_slot {
@@ -76,6 +76,9 @@ scene_holder {
 				height: 60px;
 				display: inline-block;
 			}
+                        .shop_price {
+                                font-size: 10pt;
+                        }
 
 		}
 		button {
@@ -218,7 +221,7 @@ img.fill_img {
 	pointer-events: none;
 }
 .clear {
-	clear: both;
+        clear: inherit;
 }
 
 .refinement_bar {
@@ -426,14 +429,13 @@ tr.available_upgrade {
 }
 
 div#game_render {
-	width: 1150px;
-	padding-left: 18px;
+	width: 1250px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
 .icon-mana {
-	background-image: url('../images/icons/mana.png');
+	background-image: url('https://jamuspsi.github.io/fractory/less/../images/icons/mana.png');
 	background-size: 100% 100%;
 	width: 16px;
 	height: 16px;
