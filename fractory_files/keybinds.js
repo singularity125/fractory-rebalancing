@@ -8,40 +8,29 @@ KeyBindings = Ice.$extend('KeyBindings', {
             return _.bind(fn, self);
         }
 
-        var binds = {
-            'e': self.buy_blank,
-            'b': self.buy_blank,
-            'q': self.quick_buy,
-            'f': self.quick_fractal,
-            'r': self.quick_relay,
-            'c': self.quick_conduit,
-            'a': self.quick_capacitor,
-            'h': self.quick_hopper,
-            'g': self.quick_blank_generator,
-            'd': self.delete,
-            '[': self.copy_fractal_links,
-            ']': self.paste_fractal_links,
-            'shift+space': self.toggle_pause,
-            'shift+]': self.clear_fractal_links,
-            'shift+[': self.fill_fractal_links,
-        };
-
-        _.each(binds, function(fn, key) {
-            //console.log("Binding ", key, fn);
-            Mousetrap.bind(key, _.bind(fn, self));
-        });
+        self.binds = ko.observableArray(
+            [
+            {key:'e', fn: self.buy_blank, description: 'Place a blank crystal.'},
+            {key:'b', fn:self.buy_blank, description: 'Place a blank crystal.'},
+            {key:'q', fn:self.quick_buy, description: 'Place currently selected simple gem from the shop.'},
+            {key:'f', fn:self.quick_fractal, description: 'Place a fractal.'},
+            {key:'r', fn:self.quick_relay, description: 'Place a relay.'},
+            {key:'c', fn:self.quick_conduit, description: 'Place a conduit.'},
+            {key:'a', fn:self.quick_capacitor, description: 'Place a capacitor.'},
+            {key:'h', fn:self.quick_hopper, description: 'Place a hopper.'},
+            {key:'g', fn:self.quick_blank_generator, description: 'Place a blank generator.'},
+            {key:'d', fn:self.delete, description: 'Delete the crystal under your cursor.'},
+            {key:'[', fn:self.copy_fractal_links, description: 'Copy the link layout of current fractal.'},
+            {key:']', fn:self.paste_fractal_links, description: 'Paste the copied link layout.'},
+            {key:'shift+space', fn:self.toggle_pause, description: 'Pause or unpause the game.'},
+            {key:'shift+]', fn:self.clear_fractal_links, description: 'Clear all the links in the current fractal.'},
+            {key:'shift+[', fn:self.fill_fractal_links, description: 'Activate all links in the current fractal.'},
+            ]);
         
-        var key_modifiers = ['shift'];
-        _.each(key_modifiers, function(key){
-            Mousetrap.bind(key, function(){self.set_key_modifier(key,true);},'keydown');
-            Mousetrap.bind(key, function(){self.set_key_modifier(key,false);},'keyup');
-        });
-        
-        
-        var crystal_types = ["Glow","Arcana","Waxing","Conductivity","Radiance","Imbuing","Infusing","Brilliance","Mystery","Reflection","Vividity","Power","Shine","Lens","Resonance","Prism","Shimmer","Seal","Purity","Gleam"];
+        //Default hotkeys for all crystal types
         var digit = 1;
         var bound_key;
-        _.each(crystal_types, function(type){
+        _.each(Mechs, function(mech){
             if(digit<10)
                 bound_key = digit.toString();
             else if(digit==10)
@@ -51,15 +40,36 @@ KeyBindings = Ice.$extend('KeyBindings', {
             else if(digit==20)
                 bound_key = 'shift+0'
             else 
-                bound_key = 'ctrl+'+(digit%10).toString();
+                bound_key = 'alt+'+(digit%10).toString();
             
-            Mousetrap.bind(bound_key, function() {self.quick_crystal(type);});
-            digit++;
+            if(!(mech.props().uncounted || mech.$class.$name === "Flux" || mech.$class.$name === "Flaw"))
+            {
+                self.binds().push({key : bound_key, fn : function() {self.quick_crystal(mech.$class.$name)},description: 'Place '+mech.$class.$name+'.'});
+                digit++;
+            }
         });
+        
+        //Add default hotkeys == the ones in code; bind them
+        _.each(self.binds(), function(keybind) {
+            //console.log("Binding ", key, fn);
+            keybind.default = keybind.key;
+            Mousetrap.bind(keybind.key, _.bind(keybind.fn, self));
+        });
+            
+        var key_modifiers = ['shift'];
+        _.each(key_modifiers, function(key){
+            Mousetrap.bind(key, function(){self.set_key_modifier(key,true);},'keydown');
+            Mousetrap.bind(key, function(){self.set_key_modifier(key,false);},'keyup');
+        });
+        
+        //Makes the hotkeys update in controls pane when rebinding them
+        _.each(self.binds(), function(keybind){
+            keybind.key = ko.observable(keybind.key);
+        })
+        
     },
     
-    set_key_modifier: function(modifier, state)
-    {
+    set_key_modifier: function(modifier, state) {
         switch (modifier) {
             case 'shift':
                 game.shift_pressed(state);
@@ -72,6 +82,19 @@ KeyBindings = Ice.$extend('KeyBindings', {
                 
                 break;
         }
+    },
+    
+    record_rebind: function(keybind) {
+        Mousetrap.unbind(keybind['key']());
+        keybind['key']('Press new key');
+        Mousetrap.record(function(sequence){
+            var bound_sequence = sequence.join(' ');
+            if(sequence[0] === 'esc')
+                keybind['key'](keybind['default']);
+            else
+                keybind['key'](bound_sequence);
+            Mousetrap.bind(keybind['key'](), _.bind(keybind['fn'], self));
+        });
     },
     
     buy_blank: function() {
