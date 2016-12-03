@@ -109,6 +109,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(container.part()) return;
 
         container.set_part(shop_slot.part());
+        game.hovered_part(container.part());
         
     },
 
@@ -124,6 +125,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(container.part()) return;
 
         container.set_part(shop_slot.part());
+        game.hovered_part(container.part());
     },
     
     quick_fractal: function() {
@@ -154,6 +156,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(container.part()) return;
         
         container.set_part(shop_slot.part());
+        game.hovered_part(container.part());
     },
     
     quick_utility_crystal: function(type) {
@@ -168,6 +171,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(container.part()) return;
 
         container.set_part(shop_slot.part());
+        game.hovered_part(container.part());
     },
     
     quick_relay: function() {
@@ -245,6 +249,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         {
             container.set_part(part);
             game.mana(game.mana()-cost);
+            game.hovered_part(container.part());
         }
     },
    
