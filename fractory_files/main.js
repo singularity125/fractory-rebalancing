@@ -227,7 +227,6 @@ Fractory = Ice.$extend('Fractory', {
 			self.new_game();
 		}
 		game.sync_to_gc();
-                self.keybindings.perform_bindings();
                 
                 //Updating inventory size without ascention\reset
                 while(self.inventory_slots().length < 6 + self.talents()['bigger_inventory'].points()*3) {
