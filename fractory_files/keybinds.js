@@ -8,8 +8,6 @@ KeyBindings = Ice.$extend('KeyBindings', {
             return _.bind(fn, self);
         }
 
-
-
         var binds = {
             'e': self.buy_blank,
             'b': self.buy_blank,

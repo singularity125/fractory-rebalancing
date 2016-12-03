@@ -619,37 +619,6 @@ Fractory = Ice.$extend('Fractory', {
 
 	},
         
-        controls_help_message: function(){
-            return "\
-D to delete a crystal from a node\n\
-F to place a fractal of the correct tier\n\
-R to place a relay\n\
-C to place a conduit\n\
-E or B to place a blank\n\
-Q to buy and place a simple crystal from the shop\n\
-Both blanks and crystals use the corresponding tier from their shop page\n\
-\n\
-Hover your mouse over the '< >' symbol in simple crystal shop page and scroll your mousewheel to cycle through available types\n\
-Left and rightclicking the button also works\n\
-Hover and scroll over the tier number to cycle it in the same manner\n\
-\n\
-Rightclick or doubleclick a crystal to transfer it to your inventory\n\
-Rightclick or doubleclick a node to put the first crystal from your inventory into it\n\
-\n\
-Hold shift and move your mouse over links to enable them\n\
-Hold control and move your mouse over links to disable them\n\
-\n\
-[ to copy current fractal's link layout\n\
-] to paste it\n\
-Shift + [ to activate all links in the current fractal\n\
-Shift + ] to deactivate all links in the current fractal\n\
-\n\
-Shift + Space pauses/unpauses the game\n\
-\n\
-Number keys buy and place simple crystals of corresponding type with the tier determined by that in 'Simple' shop slot\n\
-Shift + number and Control + number to place further types\n\
-Hold shift when buying enchantment upgrades to buy as many as you can in one click";
-        },
 	// get_boost: function(code) {
 	// 	var self = this;
 	// 	var boost = self.boosts()[code];

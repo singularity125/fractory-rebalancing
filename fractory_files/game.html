@@ -191,6 +191,7 @@
 					{'pane' : 'stats', label: 'Reflect'},
 					{pane: 'upgrades', label: 'Enchant'},
 					{pane: 'talents', label: 'Ascend'},
+                                        {pane: 'controls', label: 'Controls'}
 
 				],
 				as: 'pb'
@@ -217,12 +218,6 @@
 			">
 				<span data-bind="text: game.paused() ? 'Paused' : 'Pause'"></span>
 			</a>
-                        
-                        <a class="pane_button" data-bind="
-                                click: function() { alert(game.controls_help_message()); }
-                        ">
-                                <span data-bind="text: 'Controls'"></span>
-                        </a>
 
 
 		</div>
@@ -231,6 +226,7 @@
 		<!-- ko template: { name: 'kot/panes/research_pane.html', data: game, as: 'game' } --><!-- /ko -->
 		<!-- ko template: { name: 'kot/panes/upgrades_pane.html', data: game, as: 'game' } --><!-- /ko -->
 		<!-- ko template: { name: 'kot/panes/talents_pane.html', data: game, as: 'game' } --><!-- /ko -->
+                <!-- ko template: { name: 'kot/panes/controls_pane.html', data: game, as: 'game' } --><!-- /ko -->
 
 
 	</div>
