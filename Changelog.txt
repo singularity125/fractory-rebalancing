@@ -1,5 +1,9 @@
 CHANGELOG
 
+Beta 0.9.3 05.12.2016
+
+Finalised the hotkeys, they are now saved and loaded, have safeguards against conflicts, properly show up in controls pane
+
 Beta 0.9.3 04.12.2016
 
 Rewrote the Controls pane properly, now uses the same code as the rest of the panes

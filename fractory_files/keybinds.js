@@ -7,24 +7,42 @@ KeyBindings = Ice.$extend('KeyBindings', {
         function selfdot(fn) {
             return _.bind(fn, self);
         }
-
-        self.binds = ko.observableArray(
+        
+        self.binds = ko.observableArray();
+        self.set_defaults();
+        
+    },
+    
+    reset_to_defaults: function() {
+        var self = this;
+        if(window.confirm("This will reset all the hotkeys to their defaults, continue?")) {
+            _.each(self.binds(), function(keybind){
+                Mousetrap.unbind(keybind.key());
+                keybind.key(keybind.default);
+            });
+            self.bind_all_keys();
+        }
+    },
+    
+    set_defaults: function() {
+        var self = this;
+        self.binds(
             [
-            {key:'e', fn: self.buy_blank, description: 'Place a blank crystal.'},
-            {key:'b', fn:self.buy_blank, description: 'Place a blank crystal.'},
-            {key:'q', fn:self.quick_buy, description: 'Place currently selected simple gem from the shop.'},
-            {key:'f', fn:self.quick_fractal, description: 'Place a fractal.'},
-            {key:'r', fn:self.quick_relay, description: 'Place a relay.'},
-            {key:'c', fn:self.quick_conduit, description: 'Place a conduit.'},
-            {key:'a', fn:self.quick_capacitor, description: 'Place a capacitor.'},
-            {key:'h', fn:self.quick_hopper, description: 'Place a hopper.'},
-            {key:'g', fn:self.quick_blank_generator, description: 'Place a blank generator.'},
-            {key:'d', fn:self.delete, description: 'Delete the crystal under your cursor.'},
-            {key:'[', fn:self.copy_fractal_links, description: 'Copy the link layout of current fractal.'},
-            {key:']', fn:self.paste_fractal_links, description: 'Paste the copied link layout.'},
-            {key:'shift+space', fn:self.toggle_pause, description: 'Pause or unpause the game.'},
-            {key:'shift+]', fn:self.clear_fractal_links, description: 'Clear all the links in the current fractal.'},
-            {key:'shift+[', fn:self.fill_fractal_links, description: 'Activate all links in the current fractal.'},
+            {default:'e', shop_mode:'blank', description: 'Place a blank crystal.'},
+            {default:'b', shop_mode:'blank', description: 'Place a blank crystal.'},
+            {default:'q', shop_mode:'single', description: 'Place currently selected simple gem from the shop.'},
+            {default:'f', shop_mode:'fractal', description: 'Place a fractal.'},
+            {default:'r', shop_mode:'relay', description: 'Place a relay.'},
+            {default:'c', shop_mode:'conduit', description: 'Place a conduit.'},
+            {default:'a', shop_mode:'capacitor', description: 'Place a capacitor.'},
+            {default:'h', shop_mode:'hopper', description: 'Place a hopper.'},
+            {default:'g', shop_mode:'blank_generator', description: 'Place a blank generator.'},
+            {default:'d', fn:self.delete, description: 'Delete the crystal under your cursor.'},
+            {default:'[', fn:self.copy_fractal_links, description: 'Copy the link layout of current fractal.'},
+            {default:']', fn:self.paste_fractal_links, description: 'Paste the copied link layout.'},
+            {default:'shift+space', fn:self.toggle_pause, description: 'Pause or unpause the game.'},
+            {default:'shift+]', fn:self.clear_fractal_links, description: 'Clear all the links in the current fractal.'},
+            {default:'shift+[', fn:self.fill_fractal_links, description: 'Activate all links in the current fractal.'}
             ]);
         
         //Default hotkeys for all crystal types
@@ -38,86 +56,106 @@ KeyBindings = Ice.$extend('KeyBindings', {
             else if(digit>10 && digit<20)
                 bound_key = 'shift+'+(digit%10).toString();
             else if(digit==20)
-                bound_key = 'shift+0'
+                bound_key = 'shift+0';
             else 
                 bound_key = 'alt+'+(digit%10).toString();
             
-            if(!(mech.props().uncounted || mech.$class.$name === "Flux" || mech.$class.$name === "Flaw"))
+            if(!(mech.props().uncounted || mech.props().non_upgrade))
             {
-                self.binds().push({key : bound_key, fn : function() {self.quick_crystal(mech.$class.$name)},description: 'Place '+mech.$class.$name+'.'});
+                var mech_name = mech.$class.$name;
+                self.binds().push({default : bound_key, fn : function() {self.quick_crystal(mech_name);},description: 'Place '+mech_name+'.', mech: mech_name});
                 digit++;
             }
         });
         
-        //Add default hotkeys == the ones in code; bind them
-        _.each(self.binds(), function(keybind) {
-            //console.log("Binding ", key, fn);
-            keybind.default = keybind.key;
-            Mousetrap.bind(keybind.key, _.bind(keybind.fn, self));
-        });
-            
-        var key_modifiers = ['shift'];
-        _.each(key_modifiers, function(key){
-            Mousetrap.bind(key, function(){self.set_key_modifier(key,true);},'keydown');
-            Mousetrap.bind(key, function(){self.set_key_modifier(key,false);},'keyup');
-        });
-        
-        //Makes the hotkeys update in controls pane when rebinding them
         _.each(self.binds(), function(keybind){
-            keybind.key = ko.observable(keybind.key);
-        })
-        
+            keybind.key = ko.observable(keybind.default);
+        });
     },
     
-    set_key_modifier: function(modifier, state) {
-        switch (modifier) {
-            case 'shift':
-                game.shift_pressed(state);
-                break;
-            case 'ctrl':
-                break;
-            case 'alt':
-                break;
-            default:
-                
-                break;
+    bind_all_keys: function() {
+        var self = this;
+        //Makes the hotkeys update in controls pane when rebinding them
+        //Add default hotkeys == the ones in code; bind the hotkeys 
+        _.each(self.binds(), function(keybind){
+            self.do_binding(keybind);
+        });
+    },
+    
+    do_binding: function(keybind) {
+        var self = this;
+        if(keybind.key() == 'Unbound') return;
+        if(keybind.key() == 'esc') {
+            keybind.key(keybind.default);
         }
+        
+        if(keybind.shop_mode)
+            Mousetrap.bind(keybind.key(), function(){self.quick_buy(keybind.shop_mode);});
+        else
+            Mousetrap.bind(keybind.key(), _.bind(keybind.fn, self), keybind.on ? keybind.on : "keydown");
+    },
+    
+    unlocked: function(keybind) {
+        if(keybind.mech)
+            return _.contains(game.unlocked_stats_list(),keybind.mech);
+        else if(keybind.shop_mode)
+            return _.contains(_.map(game.shop_slots(), function(ss){return ss.mode();}),keybind.shop_mode);
+        else
+            return true;
+    },
+    
+    rebind: function(keybind, old_key, new_key) {
+        var self = this;
+        
+        if(new_key == 'esc')
+            new_key = keybind.default;
+        var same_key_binding = _.find(self.binds(),function(bind){return bind.key() === new_key});
+        
+        if(same_key_binding) {
+            if(new_key == keybind.default) {
+                Mousetrap.unbind(old_key);
+                keybind.key('Unbound');
+                return;
+            }
+            
+            var conf = window.confirm('"'+same_key_binding.description + '" is already bound to '+new_key+', it will be returned to default or unbound!');
+            if(conf) {
+                Mousetrap.unbind(old_key);
+                Mousetrap.unbind(new_key);
+                same_key_binding.key(same_key_binding.default);
+                keybind.key(new_key);
+                self.do_binding(keybind);
+                self.rebind(same_key_binding,'Unbound',same_key_binding.default);
+                return;
+            }
+            else {
+                keybind.key(old_key);
+                return;
+            }
+        }
+
+        Mousetrap.unbind(old_key);
+        keybind.key(new_key);
+        self.do_binding(keybind);
     },
     
     record_rebind: function(keybind) {
-        Mousetrap.unbind(keybind['key']());
-        keybind['key']('Press new key');
+        var self = this;
+        var old_key = keybind.key();
+        keybind.key('Press new key');
+        
         Mousetrap.record(function(sequence){
             var bound_sequence = sequence.join(' ');
-            if(sequence[0] === 'esc')
-                keybind['key'](keybind['default']);
-            else
-                keybind['key'](bound_sequence);
-            Mousetrap.bind(keybind['key'](), _.bind(keybind['fn'], self));
+            self.rebind(keybind, old_key, bound_sequence);
         });
     },
     
-    buy_blank: function() {
-        if(!window.game) return;
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'blank';
-        });
-        if(!shop_slot) return;
-
-        var container = game.hovered_node() || game.hovered_inventory_slot();
-        if(!container) return;       
-        if(container.part()) return;
-
-        var part = shop_slot.part();
-        container.set_part(part);
-        game.hovered_part(part);
+    quick_buy: function(shop_mode) {
+        var self=this;
         
-    },
-
-    quick_buy: function() {
         if(!window.game) return;
         var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'single';
+            return ss.mode() === shop_mode;
         });
         if(!shop_slot) return;
 
@@ -125,39 +163,33 @@ KeyBindings = Ice.$extend('KeyBindings', {
         if(!container) return;       
         if(container.part()) return;
 
+        if(shop_mode==='fractal') {
+            self.quick_fractal(shop_slot);
+            return;
+        }
+
         var part = shop_slot.part();
         container.set_part(part);
         game.hovered_part(part);
     },
     
-    quick_fractal: function() {
-        if(!window.game) return;
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === 'fractal';
-        });
-        if(!shop_slot) return;
-
+    quick_fractal: function(shop_slot) {
         var container = game.hovered_node();
-        var part = null;
-        if(container)
-            if(!container.part()){
-                var requiredTier = container.shell.depth();
-                if(requiredTier <= shop_slot.tier())
-                {
-                    part = shop_slot.part();
-                }
-                else {
-                    if(requiredTier <= shop_slot.max_tier()) {
-                        shop_slot.tier(requiredTier);
-                        shop_slot.restock();
-                        part = shop_slot.part();
-                    }
-                }
-                container.set_part(part);
-                game.hovered_part(part);
-                return;
+        var requiredTier = container.shell.depth();
+        if(requiredTier <= shop_slot.tier()) {
+            part = shop_slot.part();
+        }
+        else {
+            if(requiredTier <= shop_slot.max_tier()) {
+                shop_slot.tier(requiredTier);
+                shop_slot.restock();
+                part = shop_slot.part();
             }
-        
+        }
+        container.set_part(part);
+        game.hovered_part(part);
+        return;
+
         container = game.hovered_inventory_slot();
         if(!container) return;
         if(container.part()) return;
@@ -165,42 +197,6 @@ KeyBindings = Ice.$extend('KeyBindings', {
         part = shop_slot.part();
         container.set_part(part);
         game.hovered_part(part);
-    },
-    
-    quick_utility_crystal: function(type) {
-        if(!window.game) return;
-        var shop_slot = _.find(game.shop_slots(), function(ss) {
-            return ss.mode() === type;
-        });
-        if(!shop_slot) return;
-
-        var container = game.hovered_node() || game.hovered_inventory_slot();
-        if(!container) return;       
-        if(container.part()) return;
-
-        var part = shop_slot.part();
-        container.set_part(part);
-        game.hovered_part(part);
-    },
-    
-    quick_relay: function() {
-        KeyBindings().quick_utility_crystal('relay');
-    },
-    
-    quick_conduit: function() {
-        KeyBindings().quick_utility_crystal('conduit');
-    },
-    
-    quick_capacitor: function() {
-        KeyBindings().quick_utility_crystal('capacitor');
-    },
-    
-    quick_hopper: function() {
-        KeyBindings().quick_utility_crystal('hopper');
-    },
-    
-    quick_blank_generator: function() {
-        KeyBindings().quick_utility_crystal('blank_generator');
     },
     
     delete: function() {
@@ -223,15 +219,13 @@ KeyBindings = Ice.$extend('KeyBindings', {
         game.paused()?game.unpause():game.pause();
     },
     
-    quick_crystal: function(type){
+    quick_crystal: function(mech_name){
         if(!window.game) return;
         var container = game.hovered_node() || game.hovered_inventory_slot();
         if(!container) return;       
         if(container.part()) return;
         
-        
-        
-        if(!_.contains(game.unlocked_stats_list(),type)) return;
+        if(!_.contains(game.unlocked_stats_list(),mech_name)) return;
 
         var shop_slot = _.find(game.shop_slots(), function(ss) {
             return ss.mode() === 'single';
@@ -249,7 +243,7 @@ KeyBindings = Ice.$extend('KeyBindings', {
         var flaw = Math.floor(refinement_used - budget);
         part.add_stat('Flaw', flaw);
 
-        part.add_stat(type, budget);
+        part.add_stat(mech_name, budget);
         part.refinement(refinement_used);
         part.highest_stats.recompute();
         
@@ -360,18 +354,36 @@ KeyBindings = Ice.$extend('KeyBindings', {
     clear_fractal_links: function()
     {
         if(!window.game) return;
-        var self = KeyBindings();
+        var self = this;
         self.paste_pattern(game.saved_clear_pattern());
     },
     
     fill_fractal_links: function()
     {
         if(!window.game) return;
-        var self = KeyBindings();
+        var self = this;
         self.paste_pattern(game.saved_filled_pattern());
     },
 
+    save_to_patch: function(patch) {
+        var self = this;
+        patch.keybindings = {};
+        _.each(self.binds(),function(keybind,index) {
+            patch.keybindings[index] = {default: keybind.default, key: keybind.key()};
+        });
+        return patch;
+    },
     
+    update_from_jsonable: function(jsonable) {
+        var self = this;
+        if(!jsonable.keybindings)
+            return;
+        
+        _.each(jsonable.keybindings, function(loaded_kb){
+           var keybind = _.find(self.binds(),function(kb){return kb.default == loaded_kb.default;}); 
+           keybind.key(loaded_kb.key);
+        });
+    }
     /*shop_next: function() {
         var self = this;
         if(!window.game) return;

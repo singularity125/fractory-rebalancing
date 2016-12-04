@@ -305,13 +305,7 @@ Part = Ice.$extend('Part', {
 
         // empty.set_part(self);
         if(!Ice.isa(self.container(), ShopSlot)) return;
-        var empty = _.find(game.inventory_slots(), function(is) {
-            return !is.part();
-        });
-        if(!empty) return;
-
-        empty.set_part(self);
-        game.hovered_part(null);
+        game.move_to_empty_slot(self)
     },
     tap: function(ev) {
         var self = this;
@@ -558,12 +552,7 @@ FractalPart = Part.$extend('FractalPart', {
         // if(!self.node()) return; // Not in islots!
         // game.zoom_to_fractal(self);
         if(!Ice.isa(self.container(), ShopSlot)) return;
-        var empty = _.find(game.inventory_slots(), function(is) {
-            return !is.part();
-        });
-        if(!empty) return;
-
-        empty.set_part(self);
+        game.move_to_empty_slot(self);
     },
     raph: function(element, raph) {
         var self = this;

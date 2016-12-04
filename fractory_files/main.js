@@ -74,8 +74,6 @@ Fractory = Ice.$extend('Fractory', {
 		var self = this;
 		self.$super();
 
-                self.shift_pressed = ko.observable(false);
-
                 self.saved_fractal_pattern = ko.observable(null);
                 self.saved_clear_pattern = ko.observable("-49=");
                 self.saved_filled_pattern = ko.observable("+49=");
@@ -215,7 +213,7 @@ Fractory = Ice.$extend('Fractory', {
 			'shell', 'mana', 'inventory_slots', 'shop_slots', 'unlocked_stats_list',
 			'learned_research_list', 'boosts_list',
 			'level', 'experience', 'total_tp', 'arcana', 'arcana_spent',
-                        'saved_fractal_pattern',
+                        'saved_fractal_pattern'
 		]);
 	},
 	start_game: function() {
@@ -232,6 +230,9 @@ Fractory = Ice.$extend('Fractory', {
                 while(self.inventory_slots().length < 6 + self.talents()['bigger_inventory'].points()*3) {
                     self.inventory_slots.push(InventorySlot());
                 }
+                
+                //dirty fix for duping parts using "last moved part"
+                self.last_moved_part(null);
                 
 		self.unpause();
 	},
@@ -276,10 +277,10 @@ Fractory = Ice.$extend('Fractory', {
 
 		var blob = game.as_patch();
 
-        var json = Ice.dumps(blob);
-        localStorage['Fractory.current_game'] = json;
-        //console.log(json);
-        return blob;
+                var json = Ice.dumps(blob);
+                localStorage['Fractory.current_game'] = json;
+                //console.log(json);
+                return blob;
 	},
 	load_game: function(save_name) {
 		var self = this;
@@ -288,8 +289,11 @@ Fractory = Ice.$extend('Fractory', {
 		var json = localStorage['Fractory.current_game'];
 		blob = Ice.loads(json);
 		self.update_from_jsonable(blob);
+                
+                self.keybindings.update_from_jsonable(blob);
+                self.keybindings.bind_all_keys();
+                
 		self.shell().refresh_all_flow();
-
 		self.shell_renders([self.shell()]);
 	},
 	full_reset: function() {
@@ -318,6 +322,7 @@ Fractory = Ice.$extend('Fractory', {
 		_.each(self.upgrades(), function(upg, code) {
 			patch.upgrades[code] = upg.points();
 		});
+                self.keybindings.save_to_patch(patch);
 		return patch;
 	},
 	update_from_jsonable: function(jsonable) {
@@ -502,11 +507,11 @@ Fractory = Ice.$extend('Fractory', {
 		self.learned_research_list.push(r.code);
 		r.apply(self);
 	},
-	buy_upgrade: function(ug) {
+	buy_upgrade: function(ug, event) {
 		var self = this;
 		if(!ug.can_buy(self)) return;
                 
-                if(self.shift_pressed())
+                if(event.shiftKey)
                 {
                     self.buy_max_upgrades(ug);
                     return;
@@ -524,18 +529,18 @@ Fractory = Ice.$extend('Fractory', {
         
         //Terrible, switch to a calculation formula and remove the loop
         buy_max_upgrades: function (ug) {
-            var self = this;
+                var self = this;
 
-            var number = ug.max_buyable();
-            var total_arcana_cost = ug.buy_max_cost();
-            self.arcana.inc(-1*total_arcana_cost);
-            self.arcana_spent.inc(total_arcana_cost);
-            ug.points.inc(number);
+                var number = ug.max_buyable();
+                var total_arcana_cost = ug.buy_max_cost();
+                self.arcana.inc(-1*total_arcana_cost);
+                self.arcana_spent.inc(total_arcana_cost);
+                ug.points.inc(number);
 
-            //alert('Bought '+number+' upgrades for '+total_arcana_cost+' arcana');
-            flash($('.available_upgrade.' + ug.code), 'green');
+                //alert('Bought '+number+' upgrades for '+total_arcana_cost+' arcana');
+                flash($('.available_upgrade.' + ug.code), 'blue');
 
-            return true;
+                return true;
         },
         
 	unbuy_upgrade: function(ug) {
@@ -618,6 +623,16 @@ Fractory = Ice.$extend('Fractory', {
 		return 1 * (upg ? upg.boost_factor() : 1) * (tal ? tal.boost_factor() : 1);
 
 	},
+        
+        move_to_empty_slot: function(part) {
+                var empty = _.find(game.inventory_slots(), function(is) {
+                    return !is.part();
+                });
+                if(!empty) return;
+
+                empty.set_part(part);
+                game.hovered_part(null);
+        },
         
 	// get_boost: function(code) {
 	// 	var self = this;

@@ -22,12 +22,12 @@
     </p>
     <table class="controls_table">
         <tbody>
-            <!-- ko foreach: {data: KeyBindings().binds(), as: 'keybind'} -->
-            <tr class="binding_row">
+            <!-- ko foreach: {data: game.keybindings.binds(), as: 'keybind'} -->
+            <tr class="binding_row" data-bind="if : game.keybindings.unlocked(keybind)">
                 <td class="key_td" data-bind="
-                    text: keybind['key'](),
+                    text: keybind.key(),
                     right_click: function(){
-                        KeyBindings().record_rebind(keybind);
+                        game.keybindings.record_rebind(keybind);
                     }
                     "></td>
                 <td class="description_td" data-bind="text: keybind.description"></td>
@@ -35,4 +35,5 @@
             <!-- /ko -->
         </tbody>
     </table>
+    <button data-bind="click: function() {game.keybindings.reset_to_defaults()}" class ="reset_keybindings">Reset to defaults</button>
 </div>

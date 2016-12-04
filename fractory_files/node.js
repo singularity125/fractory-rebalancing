@@ -159,17 +159,14 @@ Node = InventorySlot.$extend('Node', {
         if(self.part()) {
             if(Ice.isa(self.part(), FractalPart)) {
                 if(game.animating_shell()) return;
-
+                if(event.shiftKey) {
+                    game.move_to_empty_slot(self.part());
+                    return;
+                }
                 game.zoom_to_fractal(self.part());
 
             } else {
-                var empty = _.find(game.inventory_slots(), function(is) {
-                    return !is.part();
-                });
-                if(!empty) return;
-
-                empty.set_part(self.part());
-                game.hovered_part(null);
+                game.move_to_empty_slot(self.part());
 
             }
         } else {

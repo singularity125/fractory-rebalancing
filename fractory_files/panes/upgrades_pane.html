@@ -1,6 +1,8 @@
 <div class="pane upgrades" data-bind="visible: game.current_pane() === 'upgrades'">
     <p>
-        Spend Arcana to increase the effective value of a stat on all crystals.
+        Spend Arcana to increase the effective value of a stat on all crystals.<br>
+        Shift click to buy as many as you can.<br>
+        Right click to remove a level.
     </p>
     <table class="shop_table noselect">
         <thead>
@@ -21,7 +23,7 @@
             click: function(data, ev) {
                 if(ev.mouseButton != 2)
                 {
-                    game.buy_upgrade(ug);
+                    game.buy_upgrade(ug,ev);
                 }
             },
             right_click: function(ev) {
