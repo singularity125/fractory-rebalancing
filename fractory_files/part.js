@@ -746,18 +746,24 @@ BlankGeneratorPart = Part.$extend('BlankGeneratorPart', {
     reverse_apply: function(game) {
         var self = this;
         
-        var blank = Part();
-        blank.tier(self.tier());
-        if(game.mana()<blank.mana_cost())
-            return;
-        
         var node = self.node();
 
         _.each(node.links, function(l) {
             if(l.active_flow() === 'down') {
                 var link_node = l.link_node();
                 if(!link_node.part())
+                {
+                    var blank = Part();
+                    blank.tier(self.tier());
+                    if(game.mana()<blank.mana_cost())
+                    {
+                        self.starved(true);
+                        return;
+                    }
+                    self.starved(false);
                     link_node.set_part(blank);
+                    game.mana.inc(-1*blank.mana_cost());
+                }
             }
         });
         }
