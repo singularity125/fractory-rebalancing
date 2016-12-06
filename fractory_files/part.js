@@ -745,11 +745,10 @@ BlankGeneratorPart = Part.$extend('BlankGeneratorPart', {
     },
     reverse_apply: function(game) {
         var self = this;
+        self.starved(false);
         
         var blank = Part();
         blank.tier(self.tier());
-        if(game.mana()<blank.mana_cost())
-            return;
         
         var node = self.node();
 
@@ -757,7 +756,15 @@ BlankGeneratorPart = Part.$extend('BlankGeneratorPart', {
             if(l.active_flow() === 'down') {
                 var link_node = l.link_node();
                 if(!link_node.part())
+                {
+                    if(game.mana()<blank.mana_cost())
+                    {
+                        self.starved(true);
+                        return;
+                    }
                     link_node.set_part(blank);
+                    game.mana.inc((-1)*blank.mana_cost());
+                }
             }
         });
         }
