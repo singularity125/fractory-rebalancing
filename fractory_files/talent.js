@@ -137,7 +137,7 @@ new Talent({
     shop_mode: 'blank_generator',
     min_level: 25,
     max_points_fn: function(game) {
-        return Talents['better_blanks'].points();
+        return (Talents['better_blanks'].points()+1);
     }
 });
 
