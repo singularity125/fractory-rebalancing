@@ -129,14 +129,14 @@ Part = Ice.$extend('Part', {
         		if(l.active_flow() === 'down') {
         			var link_node = l.link_node();
         			if(link_node && link_node.part()) {
-                        var part = link_node.part();
-                        if(Ice.isa(part, RelayPart)) {
-                            part = part.find_target();
-                        }
-                        if(part && !_.contains(ds, part)) {
-        				    ds.push(part);
-                        }
-        			}
+                                        var part = link_node.part();
+                                        if(Ice.isa(part, RelayPart)) {
+                                            part = part.find_target();
+                                        }
+                                        if(part && !_.contains(ds, part)) {
+                                            ds.push(part);
+                                        }
+                                }
         		}
         	});
         	return ds;
