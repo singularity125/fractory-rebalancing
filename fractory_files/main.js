@@ -218,7 +218,7 @@ Fractory = Ice.$extend('Fractory', {
 	},
 	start_game: function() {
 		var self = this;
-		if(localStorage['Fractory.current_game']) {
+		if(localStorage['Fractory.rebalanced_save']) {
 			self.load_game();
 		}
 		else {
@@ -278,7 +278,7 @@ Fractory = Ice.$extend('Fractory', {
 		var blob = game.as_patch();
 
                 var json = Ice.dumps(blob);
-                localStorage['Fractory.current_game'] = json;
+                localStorage['Fractory.rebalanced_save'] = json;
                 //console.log(json);
                 return blob;
 	},
@@ -286,7 +286,7 @@ Fractory = Ice.$extend('Fractory', {
 		var self = this;
 		save_name = save_name || 'current_game';
 
-		var json = localStorage['Fractory.current_game'];
+		var json = localStorage['Fractory.rebalanced_save'];
 		blob = Ice.loads(json);
 		self.update_from_jsonable(blob);
                 
